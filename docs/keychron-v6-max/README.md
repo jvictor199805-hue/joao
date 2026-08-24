@@ -9,6 +9,7 @@ Documentação do produto usada como base da landing page (`/index.html`).
 | [como-funciona.md](./como-funciona.md) | Modos de conexão, customização QMK/VIA e hot-swap |
 | [especificacoes.md](./especificacoes.md) | Ficha técnica completa |
 | [estrutura-site.md](./estrutura-site.md) | Análise das páginas de produto da Apple e estrutura proposta para o site |
+| [conteudo-site.md](./conteudo-site.md) | Copy completa por seção: títulos, textos, microcopy de botões e briefing das mídias |
 
 **Marca:** Keychron
 **Produto:** V6 Max Wireless QMK Mechanical Keyboard 2.4 GHz & Bluetooth
