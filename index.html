@@ -6,215 +6,305 @@
   <title>Keychron V6 Max | Teclado mecânico wireless QMK</title>
   <meta name="description" content="Keychron V6 Max: teclado mecânico full-size com 2.4 GHz a 1000 Hz, Bluetooth 5.1, QMK/VIA, hot-swap e bateria de 4000 mAh.">
   <style>
+    /* Radius system: buttons are pill, images and surfaces are 16px */
     :root {
-      --bg: #0b0d12;
-      --bg-soft: #12151d;
-      --card: #171b25;
-      --line: #262c3a;
-      --text: #e8eaf0;
-      --muted: #9aa3b5;
-      --accent: #4f7cff;
-      --accent-2: #9b5cff;
-      --glow-1: #4f7cff;
-      --glow-2: #ff5c8a;
-      --glow-3: #33d6a6;
-      --radius: 14px;
+      --bg: #0e0f12;
+      --bg-2: #14161b;
+      --line: #23262e;
+      --text: #ececf1;
+      --muted: #9aa1b0;
+      --accent: #6b96ff;
+      --r: 16px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
+    img { max-width: 100%; display: block; }
     a { color: inherit; }
-    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-    /* Header */
-    header {
-      position: sticky; top: 0; z-index: 10;
-      background: rgba(11, 13, 18, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 0;
-    }
-    .logo { font-weight: 800; letter-spacing: 0.06em; font-size: 1.05rem; }
-    .logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 24px; font-size: 0.9rem; color: var(--muted); }
-    .nav-links a { text-decoration: none; }
-    .nav-links a:hover { color: var(--text); }
     .btn {
       display: inline-block;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #fff; text-decoration: none;
-      padding: 12px 26px; border-radius: 999px;
-      font-weight: 700; font-size: 0.95rem;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: #e9edf7;
+      color: #101116;
+      text-decoration: none;
+      padding: 13px 30px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(79, 124, 255, 0.35); }
-    .btn-sm { padding: 9px 20px; font-size: 0.85rem; }
-    .btn-ghost {
-      background: none; border: 1px solid var(--line); color: var(--text);
-    }
-    .btn-ghost:hover { box-shadow: none; border-color: var(--accent); }
+    .btn:hover { background: #fff; }
+    .btn:active { transform: scale(0.98); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+    .btn-ghost:hover { background: var(--bg-2); border-color: var(--muted); }
+    .btn-sm { padding: 9px 22px; font-size: 0.85rem; }
 
-    /* Hero */
-    .hero { padding: 80px 0 40px; text-align: center; }
-    .tag {
-      display: inline-block; font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); border: 1px solid var(--line);
-      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
-      background: var(--bg-soft);
+    /* Nav: single line, 68px */
+    header {
+      position: sticky; top: 0; z-index: 10;
+      height: 68px;
+      background: rgba(14, 15, 18, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-weight: 800; letter-spacing: 0.04em; font-size: 1rem; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 26px; font-size: 0.88rem; color: var(--muted); }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* Hero: asymmetric split */
+    .hero { padding: 64px 0 80px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 5fr 6fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
     }
     h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      line-height: 1.15; font-weight: 800; letter-spacing: -0.02em;
-      max-width: 820px; margin: 0 auto 18px;
+      font-size: clamp(2rem, 4.2vw, 3.2rem);
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
     }
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(90deg, var(--glow-1), var(--accent-2), var(--glow-2));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+    .hero-sub {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 44ch;
+      margin-bottom: 30px;
     }
-    .sub {
-      color: var(--muted); font-size: 1.1rem;
-      max-width: 640px; margin: 0 auto 32px;
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-img img {
+      border-radius: var(--r);
+      width: 100%;
+      aspect-ratio: 16/11;
+      object-fit: cover;
     }
-    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-    .cta-note { font-size: 0.8rem; color: var(--muted); }
 
-    /* CSS keyboard illustration */
-    .kb-stage { padding: 50px 0 20px; position: relative; }
-    .kb {
-      position: relative;
-      max-width: 760px; margin: 0 auto;
-      background: linear-gradient(180deg, #1d222e, #12151d);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 22px 22px 26px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-    }
-    .kb::after {
-      content: "";
-      position: absolute; left: 8%; right: 8%; bottom: -26px; height: 46px;
-      background: radial-gradient(closest-side, rgba(79,124,255,0.45), rgba(155,92,255,0.25), transparent 75%);
-      filter: blur(14px);
-      z-index: -1;
-    }
-    .kb-rows { display: flex; flex-direction: column; gap: 7px; }
-    .kb-row { display: flex; gap: 7px; }
-    .key {
-      flex: 1; height: 34px; border-radius: 7px;
-      background: linear-gradient(180deg, #2b3242, #1a1f2b);
-      border: 1px solid #343c4f;
-      border-bottom-width: 3px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-      animation: rgbcycle 6s linear infinite;
-    }
-    .key.w15 { flex: 1.5; }
-    .key.w2  { flex: 2; }
-    .key.w6  { flex: 6; }
-    .kb-row .key:nth-child(3n)   { animation-delay: -1.5s; }
-    .kb-row .key:nth-child(3n+1) { animation-delay: -3s; }
-    .kb-row .key:nth-child(4n)   { animation-delay: -4.5s; }
-    @keyframes rgbcycle {
-      0%   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 3px 10px rgba(79,124,255,0.28); }
-      33%  { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 3px 10px rgba(255,92,138,0.28); }
-      66%  { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 3px 10px rgba(51,214,166,0.28); }
-      100% { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 3px 10px rgba(79,124,255,0.28); }
-    }
-    .knob {
-      position: absolute; top: 14px; right: 22px;
-      width: 30px; height: 30px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #4a5266, #1a1f2b);
-      border: 1px solid #414a5e;
-    }
-    @media (prefers-reduced-motion: reduce) { .key { animation: none; } }
-
-    /* Stats bar */
+    /* Stat row */
     .stats {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 16px; padding: 50px 0 10px;
-    }
-    .stat {
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: var(--radius); padding: 22px; text-align: center;
-    }
-    .stat b { display: block; font-size: 1.6rem; letter-spacing: -0.02em; }
-    .stat span { color: var(--muted); font-size: 0.85rem; }
-
-    /* Sections */
-    section { padding: 70px 0; }
-    .sec-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
-    h2 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); letter-spacing: -0.02em; margin-bottom: 12px; }
-    .sec-head p { color: var(--muted); }
-
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .card {
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: var(--radius); padding: 26px;
-    }
-    .card .ico {
-      width: 42px; height: 42px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(79, 124, 255, 0.12); color: var(--accent);
-      font-size: 1.2rem; margin-bottom: 14px;
-    }
-    .card h3 { font-size: 1.05rem; margin-bottom: 8px; }
-    .card p { color: var(--muted); font-size: 0.92rem; }
-
-    /* How it works */
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .step {
-      background: var(--bg-soft); border: 1px solid var(--line);
-      border-radius: var(--radius); padding: 26px; position: relative;
-    }
-    .step .num {
-      font-size: 0.78rem; font-weight: 700; color: var(--accent);
-      letter-spacing: 0.1em; margin-bottom: 10px;
-    }
-    .step h3 { font-size: 1.05rem; margin-bottom: 8px; }
-    .step p { color: var(--muted); font-size: 0.92rem; }
-
-    /* Specs */
-    .spec-table {
-      width: 100%; border-collapse: collapse;
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: var(--radius); overflow: hidden;
-    }
-    .spec-wrap { overflow-x: auto; border-radius: var(--radius); }
-    .spec-table th, .spec-table td {
-      text-align: left; padding: 14px 20px;
-      border-bottom: 1px solid var(--line); font-size: 0.92rem;
-    }
-    .spec-table th { color: var(--muted); font-weight: 600; width: 38%; white-space: nowrap; }
-    .spec-table tr:last-child th, .spec-table tr:last-child td { border-bottom: none; }
-
-    /* Final CTA */
-    .final {
-      text-align: center;
-      background: linear-gradient(180deg, var(--bg-soft), var(--bg));
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
-    .final .sub { margin-bottom: 28px; }
+    .stat { padding: 36px 24px; }
+    .stat + .stat { border-left: 1px solid var(--line); }
+    .stat b {
+      display: block;
+      font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .stat span { color: var(--muted); font-size: 0.9rem; }
+
+    section { padding: 96px 0; }
+    h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .lead { color: var(--muted); max-width: 62ch; }
+
+    /* Design: full-width image + stacked text + 3-col detail */
+    .design-img img {
+      border-radius: var(--r);
+      width: 100%;
+      aspect-ratio: 21/9;
+      object-fit: cover;
+      margin: 40px 0 48px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+    }
+    .detail h3 { font-size: 1rem; margin-bottom: 8px; }
+    .detail p { color: var(--muted); font-size: 0.92rem; }
+
+    /* Personalização: split text + live demo */
+    .custom-grid {
+      display: grid;
+      grid-template-columns: 6fr 5fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .feature-list { margin-top: 26px; }
+    .feature-list li {
+      list-style: none;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .feature-list li + li { border-top: 1px solid var(--line); }
+    .feature-list b { color: var(--text); }
+    .demo {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 30px;
+    }
+    .demo p { color: var(--muted); font-size: 0.85rem; margin-bottom: 18px; }
+    .demo-keys { display: flex; gap: 10px; justify-content: center; }
+    .demo-key {
+      flex: 1;
+      max-width: 74px;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      border-bottom-width: 4px;
+      background: #1b1e25;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s, border-color 0.2s;
+    }
+    .demo-key:hover { border-color: var(--accent); }
+    .demo-key:active { transform: translateY(2px); }
+    .demo small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.75rem; text-align: center; }
+
+    /* Bateria: full-bleed image with scrim */
+    .battery {
+      position: relative;
+      border-radius: var(--r);
+      overflow: hidden;
+      min-height: 460px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .battery img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .battery-inner {
+      position: relative;
+      width: 100%;
+      padding: 200px 40px 44px;
+      background: linear-gradient(180deg, transparent, rgba(10, 11, 14, 0.88) 70%);
+    }
+    .battery-inner b {
+      display: block;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .battery-inner p { color: #c7ccd8; max-width: 58ch; margin-top: 12px; }
+
+    /* Passos: vertical verb list */
+    .steps { margin-top: 44px; }
+    .step {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      padding: 32px 0;
+    }
+    .step + .step { border-top: 1px solid var(--line); }
+    .step h3 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+    .step p { color: var(--muted); }
+
+    /* Comparativo */
+    .switch-img img {
+      border-radius: var(--r);
+      width: 100%;
+      aspect-ratio: 21/9;
+      object-fit: cover;
+      margin: 40px 0;
+    }
+    .sw-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+    .sw-table th, .sw-table td { text-align: left; padding: 14px 16px; }
+    .sw-table thead th {
+      font-size: 1.05rem;
+      font-weight: 800;
+      border-bottom: 1px solid var(--line);
+    }
+    .sw-table tbody th { color: var(--muted); font-weight: 500; width: 150px; }
+    .sw-table tbody td { color: var(--text); }
+    .sw-note { color: var(--muted); font-size: 0.85rem; margin-top: 20px; }
+    .sw-wrap { overflow-x: auto; }
+
+    /* Especificações: grouped clusters */
+    .spec-clusters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-top: 44px;
+    }
+    .cluster h3 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .cluster dl { font-size: 0.92rem; }
+    .cluster dt { color: var(--muted); margin-top: 14px; }
+    .cluster dd { color: var(--text); }
+
+    /* Confiança */
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      padding: 56px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .trust h3 { font-size: 0.98rem; margin-bottom: 6px; }
+    .trust p { color: var(--muted); font-size: 0.88rem; }
+
+    /* Final */
+    .final { text-align: center; padding: 120px 0; }
+    .final .lead { margin: 0 auto 32px; }
+    .final small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.8rem; }
 
     footer {
       border-top: 1px solid var(--line);
-      padding: 30px 0; color: var(--muted);
-      font-size: 0.8rem; text-align: center;
+      padding: 34px 0;
+      color: var(--muted);
+      font-size: 0.78rem;
     }
     footer p + p { margin-top: 6px; }
 
-    @media (max-width: 820px) {
-      .grid-3, .steps { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
+    /* Reveal on scroll, gated by reduced motion */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+      .reveal.in { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 860px) {
       .nav-links { display: none; }
-      .key { height: 24px; }
+      .hero-grid, .custom-grid { grid-template-columns: 1fr; gap: 32px; }
+      .stats { grid-template-columns: 1fr; }
+      .stat + .stat { border-left: none; border-top: 1px solid var(--line); }
+      .detail-grid, .spec-clusters, .trust { grid-template-columns: 1fr; gap: 28px; }
+      .step { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+      section { padding: 64px 0; }
+      .battery { min-height: 380px; }
     }
   </style>
 </head>
@@ -224,169 +314,246 @@
     <div class="wrap nav">
       <div class="logo">KEYCHRON <span>V6 MAX</span></div>
       <nav class="nav-links">
-        <a href="#beneficios">Benefícios</a>
-        <a href="#como-funciona">Como funciona</a>
+        <a href="#design">Design</a>
+        <a href="#personalizacao">Personalização</a>
+        <a href="#comparar">Comparar</a>
         <a href="#especificacoes">Especificações</a>
       </nav>
-      <a class="btn btn-sm" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Ver na Amazon</a>
+      <a class="btn btn-sm" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
     </div>
   </header>
 
   <main>
     <section class="hero wrap">
-      <span class="tag">Wireless QMK · 2.4 GHz &amp; Bluetooth</span>
-      <h1>O teclado full-size que você configura <em>do jeito que quiser</em></h1>
-      <p class="sub">
-        Keychron V6 Max: switches hot-swap, montagem gasket, bateria de 4000 mAh
-        e wireless de 1000 Hz. Cada tecla, macro e camada sob o seu controle, com QMK e VIA.
-      </p>
-      <div class="cta-row">
-        <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
-        <a class="btn btn-ghost" href="#especificacoes">Ver ficha técnica</a>
-      </div>
-      <p class="cta-note">Compatível com macOS, Windows e Linux</p>
-
-      <div class="kb-stage" aria-hidden="true">
-        <div class="kb">
-          <div class="knob"></div>
-          <div class="kb-rows">
-            <div class="kb-row">
-              <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
-            </div>
-            <div class="kb-row">
-              <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key w2"></div><div class="key"></div><div class="key"></div><div class="key"></div>
-            </div>
-            <div class="kb-row">
-              <div class="key w15"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key w15"></div><div class="key"></div><div class="key"></div><div class="key"></div>
-            </div>
-            <div class="kb-row">
-              <div class="key w2"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key w2"></div><div class="key"></div><div class="key"></div><div class="key"></div>
-            </div>
-            <div class="kb-row">
-              <div class="key w15"></div><div class="key w15"></div><div class="key w15"></div><div class="key w6"></div><div class="key w15"></div><div class="key w15"></div><div class="key w15"></div><div class="key"></div><div class="key"></div><div class="key"></div>
-            </div>
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Wireless QMK · Bluetooth e 2.4 GHz</p>
+          <h1>O teclado que se adapta ao seu jeito de digitar</h1>
+          <p class="hero-sub">Full-size com knob, hot-swap e wireless de 1000 Hz. Cada tecla e macro configurada por você, direto no navegador.</p>
+          <div class="cta-row">
+            <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
+            <a class="btn btn-ghost" href="#especificacoes">Ver especificações</a>
           </div>
+        </div>
+        <div class="hero-img">
+          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__1/image-9bb5a916-10a6-4323-b003-33909ea450e8.png?Expires=2102951909&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=mzcA37UTMk4rK-cjJPxciUBV6qanbDGShGDotMtu0swXSve52N5AnURtZLJbB-kXUZ3VoiIl2roMc1uQHvoAzVBLy3s2xuHZyepG9C2sMrJ5-ZlxvsK~yF7Zpnu4Ct2EVvWNXtnDx-BUTZ107RHM1ZydcnvxcP~KlfF2g845KyWHRxNYH3TLLqQiKskdd~-jt6pk1KxXo3rQ2MpUX~sBd0gFuMvRIBqoyOe3NJXzW2GG8IvEYTAicdYbN7rdhZst-6IC-c53kFL0KvtEvQkswUIyEAb26XpxnOgKtFu52pkwgCGWCFZejquPg3n6V5f8DeLF2sNq178WJTpk3EIw1A__" alt="Teclado mecânico Carbon Black com backlight RGB sobre mesa escura">
         </div>
       </div>
     </section>
 
-    <div class="wrap">
+    <div class="wrap reveal">
       <div class="stats">
-        <div class="stat"><b>1000 Hz</b><span>de resposta no 2.4 GHz</span></div>
-        <div class="stat"><b>4000 mAh</b><span>até 300 h de bateria</span></div>
-        <div class="stat"><b>3 devices</b><span>pareados via Bluetooth 5.1</span></div>
-        <div class="stat"><b>100%</b><span>layout completo com knob</span></div>
+        <div class="stat"><b>1000 Hz</b><span>de resposta no modo 2.4 GHz, mesmo nível do cabo</span></div>
+        <div class="stat"><b>4000 mAh</b><span>de bateria, até 300 horas sem backlight</span></div>
+        <div class="stat"><b>3 aparelhos</b><span>pareados no Bluetooth, troca por Fn + 1, 2 ou 3</span></div>
       </div>
     </div>
 
-    <section id="beneficios">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2>Por que o V6 Max muda a sua mesa</h2>
-          <p>Recursos de teclado custom de faixa alta, montados de fábrica e prontos para usar.</p>
+    <section id="design">
+      <div class="wrap reveal">
+        <h2>Construído como os customs de bancada</h2>
+        <p class="lead">A placa fica suspensa em gaskets flexíveis e camadas de espuma IXPE, PET e látex preenchem o interior. O resultado aparece no toque, com uma flexão leve a cada tecla, e no som, mais grave e uniforme.</p>
+        <div class="design-img">
+          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__6/-t-e-x-t_-t-o_-i-m-a-g-e-e74aa07a-df16-476b-9db2-4669878fd772.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=EjLTZsguP9Jlj0dxanvbVXoFK0datwjiheXlHc9XcCTFLQgv7-F6oFI8ybkdhp2-uHpibgnf7K6cixuLr~moNSRNzhw6XWml8YlXyGD0~LWtqxh3q7cynaAaNHVtudrIxX791mq3T8HIVSDP~O0kh-h7Uwg3-nLHgPlUWndcNOF5NXTKMfCvW4j9rld9fzG3jZgGtBVi0xan5h3z6I998-GQXbSrl8ks3d8Mjo5PgeHykl1v2WHToX1Nv2yNmvvL2~b5MntfH15rHzW9OfZBqlOji0Nv4rk3DJBVg8nXaKFGv1lDfTm8fyz9AUHlzgSfj4~uRnrW3qmRoh17nDfNkg__" alt="Macro das keycaps PBT esculpidas com brilho RGB entre as teclas">
         </div>
-        <div class="grid-3">
-          <div class="card">
-            <div class="ico">&#9889;</div>
-            <h3>Wireless sem atraso</h3>
-            <p>O modo 2.4 GHz responde a 1000 Hz, mesmo nível de um teclado com fio. Serve para partidas competitivas e trabalho pesado sem cabo pela mesa.</p>
+        <div class="detail-grid">
+          <div class="detail">
+            <h3>Keycaps PBT double-shot, perfil OSA</h3>
+            <p>As legendas são moldadas em duas camadas de plástico e nunca apagam. O topo esférico do perfil OSA mantém o conforto em sessões longas.</p>
           </div>
-          <div class="card">
-            <div class="ico">&#128268;</div>
-            <h3>Três conexões, um teclado</h3>
-            <p>Receptor 2.4 GHz, Bluetooth 5.1 com até três dispositivos e cabo USB-C. Você alterna entre desktop, notebook e tablet por atalho.</p>
+          <div class="detail">
+            <h3>Knob de metal</h3>
+            <p>Volume de fábrica, qualquer outra função depois de dois minutos no Launcher.</p>
           </div>
-          <div class="card">
-            <div class="ico">&#128295;</div>
-            <h3>Hot-swap sem solda</h3>
-            <p>Os sockets aceitam switches MX de 3 e 5 pinos. Trocar o perfil de toque leva minutos e dispensa qualquer ferramenta de solda.</p>
-          </div>
-          <div class="card">
-            <div class="ico">&#127911;</div>
-            <h3>Som de teclado custom</h3>
-            <p>Montagem gasket, placa de policarbonato e espumas IXPE, PET e látex deixam o som mais grave e o toque mais macio, direto de fábrica.</p>
-          </div>
-          <div class="card">
-            <div class="ico">&#128421;</div>
-            <h3>QMK e VIA no navegador</h3>
-            <p>Remapeie teclas, crie macros e programe o knob pelo Keychron Launcher, sem instalar nada. Tudo fica salvo na memória do teclado.</p>
-          </div>
-          <div class="card">
-            <div class="ico">&#128267;</div>
-            <h3>Semanas longe da tomada</h3>
-            <p>A bateria de 4000 mAh rende até 300 horas com backlight desligado e cerca de 100 horas com iluminação moderada.</p>
+          <div class="detail">
+            <h3>Estabilizadores parafusados</h3>
+            <p>Teclas longas com menos chacoalho e som consistente, direto de fábrica.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="como-funciona">
+    <section id="personalizacao">
       <div class="wrap">
-        <div class="sec-head">
-          <h2>Como funciona</h2>
-          <p>Do unboxing ao teclado totalmente configurado em três passos.</p>
+        <div class="custom-grid reveal">
+          <div>
+            <h2>Seu layout, suas regras</h2>
+            <p class="lead">O firmware é QMK, código aberto usado pela comunidade custom. Você abre o Keychron Launcher no navegador, conecta o teclado e redesenha o layout inteiro, sem instalar programa e sem criar conta.</p>
+            <ul class="feature-list">
+              <li><b>Remap total.</b> Qualquer tecla vira qualquer função, em todas as camadas.</li>
+              <li><b>Macros.</b> Sequências que você repete todo dia em um único toque.</li>
+              <li><b>Memória interna.</b> A configuração vai com o teclado para qualquer computador.</li>
+              <li><b>Hot-swap.</b> Os sockets aceitam qualquer switch MX de 3 ou 5 pinos, sem solda.</li>
+            </ul>
+          </div>
+          <div class="demo" aria-label="Demonstração de remapeamento">
+            <p>Toque em uma tecla e veja o remap acontecer:</p>
+            <div class="demo-keys">
+              <button class="demo-key" type="button">F13</button>
+              <button class="demo-key" type="button">Copiar</button>
+              <button class="demo-key" type="button">Macro</button>
+              <button class="demo-key" type="button">Vol +</button>
+              <button class="demo-key" type="button">Camada 2</button>
+            </div>
+            <small>No teclado real, isso acontece no Keychron Launcher, pelo navegador.</small>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap reveal">
+        <div class="battery">
+          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__2/-t-e-x-t_-t-o_-i-m-a-g-e-9abf8ac2-6b71-4c02-baec-2beffa7754d0.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=GAOiGaiJI7ViARJOXvd0jfoBhdfNey3rXyP4jmssRplrtvxUBEhVF-FwYo3tcKdoqbz9c3F36~p7aBIXGjNhfDT5rQxPqzfzfqPkcH3AlQKnNKxTJqSD-AV7clEONCkv5cN-OzSCDEHB6B3VEJUhsOnzUUsjIBXpIsAQTpDIdqXAHwGnGO78EXONJuXwimXtSQqELrq7VbY~HEWCPpdqo7j~4HjcZXoDxqc3iWN57MCwpeqEIkzhqJ4y2e-hyJXKKCFn9JdFJhm9MiInh0pwwOut0SaYQgFNAY2dR57rVtHn6cX7KS2GN-BP0GMUfVwODq7kT-iHjguoIHyx1LK3AQ__" alt="Teclado full-size sem cabo sobre mesa de madeira ao entardecer">
+          <div class="battery-inner">
+            <b>Até 300 horas de bateria</b>
+            <p>Com o backlight desligado, os 4000 mAh seguram semanas de trabalho. Com luz moderada, cerca de 100 horas, e o USB-C recarrega enquanto você digita.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap reveal">
+        <h2>Da caixa ao seu layout</h2>
         <div class="steps">
           <div class="step">
-            <div class="num">PASSO 01</div>
-            <h3>Escolha a conexão</h3>
-            <p>Mova o seletor físico para 2.4 GHz (receptor incluso), Bluetooth ou cabo. A chave ao lado ajusta o teclado para Mac ou Windows, e keycaps extras dos dois sistemas vêm na caixa.</p>
+            <h3>Conecte</h3>
+            <p>Mova o seletor para 2.4 GHz com o receptor incluso, pareie por Bluetooth ou use o cabo USB-C. A chave ao lado ajusta o teclado para Mac ou Windows, com keycaps dos dois sistemas na caixa.</p>
           </div>
           <div class="step">
-            <div class="num">PASSO 02</div>
-            <h3>Configure no navegador</h3>
-            <p>Abra o Keychron Launcher, conecte o teclado e remapeie qualquer tecla, camada ou macro. O knob aceita volume, zoom, scroll ou a função que você definir.</p>
+            <h3>Configure</h3>
+            <p>Abra o Keychron Launcher, conecte o teclado e ajuste teclas, camadas, macros e a função do knob. Tudo fica gravado na memória interna.</p>
           </div>
           <div class="step">
-            <div class="num">PASSO 03</div>
-            <h3>Troque o que quiser</h3>
-            <p>Com os extratores inclusos, você remove keycaps e switches sem solda. Os Gateron Jupiter pré-lubrificados aguentam até 80 milhões de acionamentos, e qualquer switch MX entra no lugar.</p>
+            <h3>Troque</h3>
+            <p>Com os extratores da caixa, keycaps e switches saem sem ferramenta de solda. Os Gateron Jupiter aguentam até 80 milhões de acionamentos, e qualquer switch MX entra no lugar.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="comparar">
+      <div class="wrap reveal">
+        <h2>Qual Gateron Jupiter combina com você</h2>
+        <p class="lead">Os três switches disponíveis mudam o toque do teclado, e a escolha depende do que você faz com ele o dia inteiro.</p>
+        <div class="switch-img">
+          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__1/-t-e-x-t_-t-o_-i-m-a-g-e-32dc70ae-ac29-4b99-8b56-6d3aaa0a2bae.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=MHB60wb7PYvM7GRwZ-DPAOjnQqGXKQIb6ChI1lE30h~uQocOOq8gqPBIa4odWDE97nC42XPC4JtvuwJzPP8YPm~vt1EYp1G3zlCvRWnyD33eIuorOo6~nLorJ5op4Cc2oUNlgP4k7z0u~39mmNOiXF~qPS1C2bAolTvZP9vh~9vr9GGnxvkHmXujSnV5PQJNvnSK5wfn6pXz7FbWEp4q8P-jZatth6-wcic1JyH-rhs-IfV6k57TiqGEwJlDgJJ-0LLH-gLbZZ5cOj~YQJJKu5dBLUoI~JiV6-WunTqcm0FZm-b6KdeoYX96C-Prb81kyq91eDI1BWBuHeCz8g-Cog__" alt="Três switches mecânicos lado a lado com hastes vermelha, marrom e amarela">
+        </div>
+        <div class="sw-wrap">
+          <table class="sw-table">
+            <thead>
+              <tr><th></th><th>Red</th><th>Brown</th><th>Banana</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Tipo</th><td>Linear</td><td>Tátil</td><td>Tátil pesado</td></tr>
+              <tr><th>Sensação</th><td>Curso liso, sem degrau</td><td>Degrau leve no acionamento</td><td>Degrau firme e mais resistente</td></tr>
+              <tr><th>Som</th><td>Mais baixo</td><td>Médio</td><td>Médio, mais encorpado</td></tr>
+              <tr><th>Indicado para</th><td>Jogos e digitação leve</td><td>Uso misto, o mais versátil</td><td>Quem digita forte e quer feedback claro</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="sw-note">Existe também a versão barebone, sem switches e keycaps, para quem quer montar do zero. As três variantes estão na página do produto na Amazon.</p>
       </div>
     </section>
 
     <section id="especificacoes">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2>Especificações</h2>
-          <p>Ficha técnica da versão Fully Assembled Knob, layout ANSI.</p>
-        </div>
-        <div class="spec-wrap">
-          <table class="spec-table">
-            <tr><th>Layout</th><td>Full-size 100% (108 teclas) com knob programável</td></tr>
-            <tr><th>Conexões</th><td>2.4 GHz (1000 Hz), Bluetooth 5.1 (3 dispositivos), USB-C</td></tr>
-            <tr><th>Firmware</th><td>QMK open source, configuração via Keychron Launcher (web)</td></tr>
-            <tr><th>Hot-swap</th><td>Sim, switches MX de 3 e 5 pinos</td></tr>
-            <tr><th>Switches</th><td>Gateron Jupiter pré-lubrificados (Red, Brown ou Banana)</td></tr>
-            <tr><th>Keycaps</th><td>PBT double-shot, perfil OSA</td></tr>
-            <tr><th>Montagem</th><td>Gasket mount, placa de policarbonato</td></tr>
-            <tr><th>Acústica</th><td>Espumas IXPE, PET e látex</td></tr>
-            <tr><th>Iluminação</th><td>RGB south-facing com efeitos configuráveis</td></tr>
-            <tr><th>Bateria</th><td>4000 mAh, até 300 h sem backlight</td></tr>
-            <tr><th>Estabilizadores</th><td>Parafusados (screw-in)</td></tr>
-            <tr><th>Compatibilidade</th><td>macOS, Windows e Linux, com seletor físico</td></tr>
-            <tr><th>Na caixa</th><td>Cabo USB-C, receptor 2.4 GHz, keycaps Mac/Win, extratores, manual</td></tr>
-          </table>
+      <div class="wrap reveal">
+        <h2>Especificações</h2>
+        <p class="lead">Ficha técnica da versão Fully Assembled Knob, layout ANSI, em três blocos.</p>
+        <div class="spec-clusters">
+          <div class="cluster">
+            <h3>Conexão</h3>
+            <dl>
+              <dt>Modos</dt><dd>2.4 GHz, Bluetooth 5.1 e USB-C</dd>
+              <dt>Taxa de resposta</dt><dd>Até 1000 Hz (2.4 GHz e cabo)</dd>
+              <dt>Pareamento</dt><dd>3 dispositivos no Bluetooth</dd>
+              <dt>Bateria</dt><dd>4000 mAh, até 300 h sem backlight</dd>
+            </dl>
+          </div>
+          <div class="cluster">
+            <h3>Construção</h3>
+            <dl>
+              <dt>Layout</dt><dd>Full-size 100%, 108 teclas, knob</dd>
+              <dt>Montagem</dt><dd>Gasket com placa de policarbonato</dd>
+              <dt>Acústica</dt><dd>Espumas IXPE, PET e látex</dd>
+              <dt>Keycaps</dt><dd>PBT double-shot, perfil OSA</dd>
+            </dl>
+          </div>
+          <div class="cluster">
+            <h3>No dia a dia</h3>
+            <dl>
+              <dt>Firmware</dt><dd>QMK, config via Keychron Launcher</dd>
+              <dt>Hot-swap</dt><dd>Switches MX de 3 e 5 pinos</dd>
+              <dt>Iluminação</dt><dd>RGB south-facing configurável</dd>
+              <dt>Sistemas</dt><dd>macOS, Windows e Linux</dd>
+            </dl>
+          </div>
         </div>
       </div>
     </section>
 
+    <div class="wrap reveal">
+      <div class="trust">
+        <div>
+          <h3>Envio internacional</h3>
+          <p>A Amazon entrega no Brasil com prazo e custo calculados no checkout.</p>
+        </div>
+        <div>
+          <h3>Devolução</h3>
+          <p>Política de devolução da Amazon, nos prazos e condições da loja.</p>
+        </div>
+        <div>
+          <h3>Garantia Keychron</h3>
+          <p>Suporte oficial do fabricante para defeitos de fábrica.</p>
+        </div>
+      </div>
+    </div>
+
     <section class="final">
-      <div class="wrap">
+      <div class="wrap reveal">
         <h2>Digite melhor a partir de hoje</h2>
-        <p class="sub">O V6 Max está disponível na Amazon com envio internacional. Confira o preço atual e as opções de switch na página do produto.</p>
+        <p class="lead">O V6 Max está disponível nas versões Red, Brown e Banana. Confira o preço atual e o prazo de entrega na página do produto.</p>
         <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
+        <small>Layout ANSI na cor Carbon Black, com knob incluso.</small>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="wrap">
-      <p>Página de demonstração. Keychron e V6 Max são marcas de seus respectivos donos.</p>
-      <p>O link de compra direciona para a Amazon e pode conter código de afiliado.</p>
+      <p>Página de demonstração. Keychron e V6 Max são marcas de seus respectivos donos. Fotos ilustrativas geradas por IA.</p>
+      <p>O link de compra direciona para a Amazon e pode conter código de afiliado. Valores de autonomia e desempenho informados pelo fabricante.</p>
     </div>
   </footer>
 
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.15 });
+        document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+      }
+
+      var maps = [
+        ["F13", "Copiar", "Macro", "Vol +", "Camada 2"],
+        ["Colar", "Zoom", "Print", "Mudo", "Emoji"],
+        ["Desfazer", "Buscar", "Abrir app", "Play", "Camada 3"]
+      ];
+      document.querySelectorAll(".demo-key").forEach(function (key, i) {
+        var state = 0;
+        key.addEventListener("click", function () {
+          state = (state + 1) % maps.length;
+          key.textContent = maps[state][i];
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
