@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Board | Keychron (referência de projeto)</title>
+  <meta name="description" content="Brand board de referência da identidade visual Keychron: paleta, tipografia, botões e tom de voz. Valores aproximados, documento interno de projeto.">
+  <style>
+    :root {
+      --ink: #111113;
+      --paper: #ffffff;
+      --grey-1: #f5f5f7;
+      --grey-2: #6e6e73;
+      --line: #e3e3e8;
+      --orange: #f25c2b;
+      --steel: #47698f;
+      --red: #e12d39;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Helvetica Neue", "Segoe UI", Roboto, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+    .board-head {
+      border-bottom: 1px solid var(--line);
+      padding: 48px 0 40px;
+    }
+    .board-head h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+    .board-head p { color: var(--grey-2); max-width: 70ch; margin-top: 10px; font-size: 0.95rem; }
+    .note {
+      display: inline-block;
+      margin-top: 16px;
+      background: var(--grey-1);
+      border: 1px solid var(--line);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      color: var(--grey-2);
+    }
+
+    section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+    .sec-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--grey-2);
+      margin-bottom: 24px;
+    }
+
+    /* Wordmark */
+    .marks { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .mark {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 180px;
+      font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .mark.light { background: var(--grey-1); color: var(--ink); }
+    .mark.dark { background: var(--ink); color: var(--paper); }
+    .mark-note { grid-column: 1 / -1; color: var(--grey-2); font-size: 0.82rem; }
+
+    /* Palette */
+    .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .swatch { border: 1px solid var(--line); }
+    .swatch .chip { height: 110px; }
+    .swatch .meta { padding: 14px; }
+    .swatch b { display: block; font-size: 0.9rem; }
+    .swatch code { font-size: 0.8rem; color: var(--grey-2); font-family: "SF Mono", Consolas, monospace; }
+    .swatch p { font-size: 0.78rem; color: var(--grey-2); margin-top: 6px; }
+    .ratio { margin-top: 28px; }
+    .ratio-bar { display: flex; height: 26px; border: 1px solid var(--line); }
+    .ratio p { font-size: 0.78rem; color: var(--grey-2); margin-top: 8px; }
+
+    /* Type */
+    .type-row { padding: 22px 0; display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: baseline; }
+    .type-row + .type-row { border-top: 1px solid var(--line); }
+    .type-row .tag { font-size: 0.78rem; color: var(--grey-2); }
+    .t-display { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+    .t-h2 { font-size: 1.5rem; font-weight: 700; }
+    .t-body { font-size: 1rem; color: #333; max-width: 60ch; }
+    .t-caption { font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-2); }
+    .type-note { margin-top: 20px; color: var(--grey-2); font-size: 0.82rem; }
+
+    /* Buttons */
+    .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .btn-cell { border: 1px solid var(--line); padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+    .btn-cell span { font-size: 0.78rem; color: var(--grey-2); }
+    .kb-btn {
+      display: inline-block; text-decoration: none; cursor: pointer;
+      font: inherit; font-size: 0.92rem; font-weight: 600;
+      padding: 13px 32px; border-radius: 3px; border: 1px solid transparent;
+      transition: background 0.2s, color 0.2s;
+    }
+    .kb-primary { background: var(--ink); color: var(--paper); }
+    .kb-primary:hover { background: #2c2c30; }
+    .kb-secondary { background: transparent; color: var(--ink); border-color: var(--ink); }
+    .kb-secondary:hover { background: var(--ink); color: var(--paper); }
+    .kb-link { background: none; border: none; padding: 0; color: var(--ink); text-decoration: underline; font-weight: 600; font-size: 0.92rem; cursor: pointer; }
+    .kb-badge { display: inline-block; background: var(--red); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 2px; }
+
+    /* Product language */
+    .prod-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 32px; align-items: center; }
+    .prod-grid img { width: 100%; display: block; border: 1px solid var(--line); }
+    .prod-grid ul { list-style: none; }
+    .prod-grid li { padding: 12px 0; font-size: 0.9rem; color: #333; }
+    .prod-grid li + li { border-top: 1px solid var(--line); }
+    .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+
+    /* Voice */
+    .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .voice-grid ol { padding-left: 20px; }
+    .voice-grid li { padding: 8px 0; font-size: 0.92rem; color: #333; }
+    .voice-grid li b { color: var(--ink); }
+    .vs-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    .vs-table th { text-align: left; padding: 10px 12px; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-2); border-bottom: 1px solid var(--line); }
+    .vs-table td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .vs-table td:first-child { color: var(--grey-2); }
+
+    footer { padding: 36px 0 60px; color: var(--grey-2); font-size: 0.78rem; }
+
+    @media (max-width: 820px) {
+      .marks, .btn-grid, .prod-grid, .voice-grid { grid-template-columns: 1fr; }
+      .swatches { grid-template-columns: repeat(2, 1fr); }
+      .type-row { grid-template-columns: 1fr; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap board-head">
+    <h1>Brand Board · Keychron</h1>
+    <p>Referência interna do projeto V6 Max: paleta, tipografia, componentes e tom de voz da marca, para manter as peças consistentes.</p>
+    <span class="note">Valores de cor e fonte são aproximações reconstruídas da linguagem de produto. Validar com o site oficial antes de uso comercial.</span>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">01 · Wordmark</p>
+      <div class="marks">
+        <div class="mark light">Keychron</div>
+        <div class="mark dark">Keychron</div>
+        <p class="mark-note">Representação tipográfica em fonte substituta. O logotipo oficial é monocromático (preto no claro, branco no escuro) e deve ser obtido nos assets da marca, nunca redesenhado.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">02 · Paleta (aprox.)</p>
+      <div class="swatches">
+        <div class="swatch">
+          <div class="chip" style="background:#111113"></div>
+          <div class="meta"><b>Preto Keychron</b><code>#111113</code><p>Texto, botões primários, banners escuros</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#ffffff; border-bottom:1px solid var(--line)"></div>
+          <div class="meta"><b>Branco</b><code>#FFFFFF</code><p>Fundo principal da loja</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#f5f5f7"></div>
+          <div class="meta"><b>Cinza claro</b><code>#F5F5F7</code><p>Fundos de seção e cards</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#6e6e73"></div>
+          <div class="meta"><b>Cinza médio</b><code>#6E6E73</code><p>Texto de apoio e legendas</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#f25c2b"></div>
+          <div class="meta"><b>Laranja Keychron</b><code>#F25C2B</code><p>Assinatura das keycaps, detalhes pontuais</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#47698f"></div>
+          <div class="meta"><b>Azul aço</b><code>#47698F</code><p>Acento secundário de colorway</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#e12d39"></div>
+          <div class="meta"><b>Vermelho promo</b><code>#E12D39</code><p>Selos de oferta, somente</p></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:linear-gradient(135deg,#111113 50%,#f25c2b 50%)"></div>
+          <div class="meta"><b>Par de assinatura</b><code>preto + laranja</code><p>A combinação que identifica a marca</p></div>
+        </div>
+      </div>
+      <div class="ratio">
+        <div class="ratio-bar">
+          <div style="width:60%; background:#ffffff"></div>
+          <div style="width:18%; background:#f5f5f7"></div>
+          <div style="width:12%; background:#111113"></div>
+          <div style="width:8%; background:#f25c2b"></div>
+          <div style="width:2%; background:#e12d39"></div>
+        </div>
+        <p>Proporção de uso: neutros dominam (~90%), o laranja pontua (~8%) e o vermelho aparece só em promoção.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">03 · Tipografia</p>
+      <div class="type-row">
+        <span class="tag">Display · bold 800 · tracking -2%</span>
+        <p class="t-display">Digite do seu jeito</p>
+      </div>
+      <div class="type-row">
+        <span class="tag">Título de seção · bold 700</span>
+        <p class="t-h2">Hot-swap sem solda, direto de fábrica</p>
+      </div>
+      <div class="type-row">
+        <span class="tag">Corpo · regular · 16px</span>
+        <p class="t-body">A placa aceita switches MX de 3 e 5 pinos, e a troca leva minutos com o extrator que vem na caixa. O firmware QMK deixa cada tecla sob o seu controle.</p>
+      </div>
+      <div class="type-row">
+        <span class="tag">Rótulo · caps · tracking largo</span>
+        <p class="t-caption">Full-size · QMK · 1000 Hz</p>
+      </div>
+      <p class="type-note">Família observada: sans neutra de traço geométrico (espírito Helvetica/Roboto). Equivalentes livres para web: Inter ou Roboto. A fonte exata do tema Shopify deve ser confirmada com DevTools no site oficial.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">04 · Botões e componentes</p>
+      <div class="btn-grid">
+        <div class="btn-cell">
+          <span>Primário · fundo preto, raio 3px, capitalizado</span>
+          <button class="kb-btn kb-primary" type="button">Comprar agora</button>
+        </div>
+        <div class="btn-cell">
+          <span>Secundário · contorno 1px, inverte no hover</span>
+          <button class="kb-btn kb-secondary" type="button">Saiba mais</button>
+        </div>
+        <div class="btn-cell">
+          <span>Link de texto · preto sublinhado</span>
+          <button class="kb-link" type="button">Ver especificações completas</button>
+        </div>
+        <div class="btn-cell">
+          <span>Selo de oferta · vermelho, uso restrito</span>
+          <span class="kb-badge">ECONOMIZE 15%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">05 · Linguagem de produto</p>
+      <div class="prod-grid">
+        <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__1/-t-e-x-t_-t-o_-i-m-a-g-e-32dc70ae-ac29-4b99-8b56-6d3aaa0a2bae.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=MHB60wb7PYvM7GRwZ-DPAOjnQqGXKQIb6ChI1lE30h~uQocOOq8gqPBIa4odWDE97nC42XPC4JtvuwJzPP8YPm~vt1EYp1G3zlCvRWnyD33eIuorOo6~nLorJ5op4Cc2oUNlgP4k7z0u~39mmNOiXF~qPS1C2bAolTvZP9vh~9vr9GGnxvkHmXujSnV5PQJNvnSK5wfn6pXz7FbWEp4q8P-jZatth6-wcic1JyH-rhs-IfV6k57TiqGEwJlDgJJ-0LLH-gLbZZ5cOj~YQJJKu5dBLUoI~JiV6-WunTqcm0FZm-b6KdeoYX96C-Prb81kyq91eDI1BWBuHeCz8g-Cog__" alt="Três switches mecânicos em macro sobre superfície escura, exemplo da fotografia de produto">
+        <ul>
+          <li><span class="dot" style="background:#f25c2b"></span>O laranja entra na cena pelo próprio produto, como na tecla Esc</li>
+          <li><span class="dot" style="background:#111113"></span>Fundos neutros: estúdio branco, cinza ou madeira escura</li>
+          <li><span class="dot" style="background:#6e6e73"></span>Closeups de keycaps e switches comunicam construção</li>
+          <li><span class="dot" style="background:#47698f"></span>Cenas de uso em mesas reais, luz natural, produto protagonista</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">06 · Tom de voz</p>
+      <div class="voice-grid">
+        <ol>
+          <li><b>Especificação na frente.</b> O número sustenta a frase antes de qualquer adjetivo.</li>
+          <li><b>Entusiasta acessível.</b> Fala a língua da comunidade custom e explica o termo na primeira aparição.</li>
+          <li><b>Confiança sem inflar.</b> Pouco superlativo; toda afirmação fecha com a ficha técnica.</li>
+          <li><b>Multiplataforma sempre.</b> Mac e Windows citados juntos, em pé de igualdade.</li>
+          <li><b>Usuário no controle.</b> Você remapeia, você troca, você decide.</li>
+        </ol>
+        <table class="vs-table">
+          <thead><tr><th>Evitar</th><th>Preferir</th></tr></thead>
+          <tbody>
+            <tr><td>"O teclado definitivo que vai mudar sua vida"</td><td>"Full-size com QMK, hot-swap e 1000 Hz sem fio"</td></tr>
+            <tr><td>"Tecnologia de ponta incomparável"</td><td>"A mesma resposta de um teclado com fio, sem o fio"</td></tr>
+            <tr><td>"Feito para gamers hardcore"</td><td>"Serve para a partida da noite e a planilha do dia seguinte"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>Documento interno de referência do projeto V6 Max. Keychron é marca de seus respectivos donos; cores e fontes são aproximações a validar no site oficial. Foto de produto gerada por IA para este projeto.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
