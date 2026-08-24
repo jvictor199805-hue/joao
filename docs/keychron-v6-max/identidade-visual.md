@@ -75,7 +75,11 @@ Estados: hover escurece ou inverte, active comprime levemente. Sem sombras color
 | "Tecnologia de ponta incomparável" | "A mesma resposta de um teclado com fio, sem o fio" |
 | "Feito para gamers hardcore" | "Serve para a partida da noite e a planilha do dia seguinte" |
 
-## 7. Aplicação neste projeto
+## 7. Brand board em imagem
+
+Além do board em HTML, existe uma versão em imagem única (grid 3x3, gerada com a skill brandkit) para apresentações e compartilhamento rápido: [baixar o board em PNG 2K](https://mcp.artlist.io/mcp/download?u=https%3A%2F%2Fcms-toolkit-artifacts.artlist.io%2Fcontent%2F-t-e-x-t_-t-o_-i-m-a-g-e-v1%2Fmedia__6%2Fimage-17d6444a-08ed-43c5-84f3-8c54853cc1b8.png%3FExpires%3D2102954741%26Key-Pair-Id%3DK2ZDLYDZI2R1DF%26Signature%3DGHknnVXGkCc-hkQwZpXe0o20cTwaB70gksGCxpALictfRmiRCIsoeAfmmaNI13qfubBRnD-B~fAIpcvsMK5Qd2mHV6yGGZA0ZHBl8VtJjnUDDBPrczKRyDoFDEQrZxVJLpe1UWO-dx4exFkJsKjeQaVfGC5jAa4HrBK5OxCxKbrjkPuo2ZkbV97UzierUC8XXvkhHNynbT6nUzlJanTOOj-ZaiAm7N0PaZLUuFF~eScXEFvd0Ffo7kDe0xbkKpNUznYDnSHwQKZe8hBpmuacVbHOJ7MnvoZTWJdyLGD6tPhZJApAsyJChE6PR-xpPEn6g1yoT4gD7Foz22jBr8ki3w__%26name%3Dimage-17d6444a-08ed-43c5-84f3-8c54853cc1b8.png). Peça de referência interna, com wordmark tipográfico, sem uso do logotipo oficial.
+
+## 8. Aplicação neste projeto
 
 - A landing atual usa tema escuro com acento azul, uma direção própria validada pela taste-skill. Para aproximar da marca, a variação fiel seria: fundo branco, texto preto, botões pretos e o laranja `#F25C2B` como único acento
 - O brand board visual está em [`brand-board.html`](../../brand-board.html)
