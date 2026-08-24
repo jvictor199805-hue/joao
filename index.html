@@ -257,17 +257,18 @@
     <!-- 02 O FILME: o site inteiro e uma animacao de scroll.
          O video avanca com a rolagem e cada especificacao entra como capitulo,
          sincronizada com a cena (teclado inteiro, teclas suspensas, knob, remontagem).
-         Sequencia de frames: rode scripts/extract-frames.sh e commite assets/sequence/;
-         a pagina troca sozinha do video para os frames quando existirem.
+         Frames ja extraidos em assets/sequence/ (120 quadros WebP); a pagina usa
+         a sequencia em canvas e o video local fica como fallback. Para trocar o
+         video no futuro, rode scripts/extract-frames.sh com o novo arquivo.
          Ajuste fino: mude data-start / data-end de cada capitulo (fracoes de 0 a 1). -->
     <section class="cinema" id="cinema">
       <div class="cinema-stage">
-        <img class="poster" src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260824_190850_d939325f-bc7c-41a1-b891-d13a66927382.png" alt="Teclado mecânico visto de cima com brilho laranja sob o case">
-        <video id="scrub-video" muted playsinline preload="auto" crossorigin="anonymous" src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260824_192819_01f9ed6f-d254-4559-8d0c-099479d28cd6.mp4"></video>
+        <img class="poster" src="assets/sequence/frame_0001.webp" alt="Teclado mecânico visto de cima com brilho laranja sob o case">
+        <video id="scrub-video" muted playsinline preload="auto" src="assets/keyboard-scroll.mp4"></video>
         <canvas id="scrub-canvas" hidden></canvas>
 
         <!-- Capitulo 1: abertura, teclado inteiro -->
-        <div class="chapter ch-left" data-start="0" data-end="0.12">
+        <div class="chapter ch-left" data-start="0" data-end="0.08">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Wireless QMK · Bluetooth e 2.4 GHz</p>
@@ -282,7 +283,7 @@
         </div>
 
         <!-- Capitulo 2: conexao -->
-        <div class="chapter ch-right" data-start="0.12" data-end="0.27">
+        <div class="chapter ch-right" data-start="0.08" data-end="0.22">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Conexão</p>
@@ -296,7 +297,7 @@
         </div>
 
         <!-- Capitulo 3: hot-swap, sincronizado com as teclas suspensas -->
-        <div class="chapter ch-left" data-start="0.27" data-end="0.42">
+        <div class="chapter ch-left" data-start="0.22" data-end="0.38">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Hot-swap</p>
@@ -309,7 +310,7 @@
         </div>
 
         <!-- Capitulo 4: construcao, teclado aberto -->
-        <div class="chapter ch-right" data-start="0.42" data-end="0.56">
+        <div class="chapter ch-right" data-start="0.38" data-end="0.5">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Construção</p>
@@ -319,7 +320,7 @@
         </div>
 
         <!-- Capitulo 5: knob, sincronizado com a cena da rodinha -->
-        <div class="chapter ch-left" data-start="0.56" data-end="0.7">
+        <div class="chapter ch-left" data-start="0.5" data-end="0.65">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Knob</p>
@@ -329,7 +330,7 @@
         </div>
 
         <!-- Capitulo 6: QMK, remontagem comecando -->
-        <div class="chapter ch-right" data-start="0.7" data-end="0.81">
+        <div class="chapter ch-right" data-start="0.65" data-end="0.78">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">QMK e VIA</p>
@@ -339,7 +340,7 @@
         </div>
 
         <!-- Capitulo 7: bateria, teclado quase remontado -->
-        <div class="chapter ch-left" data-start="0.81" data-end="0.91">
+        <div class="chapter ch-left" data-start="0.78" data-end="0.9">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Bateria</p>
@@ -353,7 +354,7 @@
         </div>
 
         <!-- Capitulo 8: fechamento, teclado inteiro de novo -->
-        <div class="chapter ch-center" data-start="0.91" data-end="1">
+        <div class="chapter ch-center" data-start="0.9" data-end="1">
           <div class="scrim"></div>
           <div class="chapter-copy">
             <p class="eyebrow">Disponível na Amazon</p>
