@@ -8,24 +8,25 @@
   <style>
     /*
       Identidade: docs/keychron-v6-max/identidade-visual.md
-      Tema claro travado (marca de loja branca). Acento único: laranja #F25C2B.
-      Raios: botões 4px, mídia e superfícies 12px.
+      Direção cinematográfica: o site inteiro é uma única animação de scroll.
+      O vídeo do teclado avança conforme a rolagem e cada especificação
+      entra como um capítulo sincronizado com a cena. Tema escuro do vídeo
+      aplicado à página toda; acento único laranja #F25C2B.
     */
     :root {
-      --paper: #fcfcfd;
-      --panel: #f5f5f7;
-      --ink: #111113;
-      --muted: #6e6e73;
-      --line: #e4e4e9;
+      --bg: #0b0c0f;
+      --panel: #14151b;
+      --ink: #f3f4f8;
+      --muted: #9a9daa;
+      --line: rgba(255, 255, 255, 0.1);
       --accent: #f25c2b;
-      --accent-soft: #fdeee7;
       --r-btn: 4px;
       --r-media: 12px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--paper);
+      background: var(--bg);
       color: var(--ink);
       font-family: "Helvetica Neue", "Segoe UI", Roboto, system-ui, sans-serif;
       line-height: 1.6;
@@ -37,8 +38,8 @@
 
     .btn {
       display: inline-block;
-      background: var(--ink);
-      color: #fff;
+      background: #f3f4f8;
+      color: #101116;
       text-decoration: none;
       padding: 14px 32px;
       border-radius: var(--r-btn);
@@ -47,43 +48,17 @@
       white-space: nowrap;
       transition: background 0.2s, transform 0.15s;
     }
-    .btn:hover { background: #2b2b30; }
+    .btn:hover { background: #fff; }
     .btn:active { transform: scale(0.98); }
-    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
-    .btn-ghost:hover { background: var(--ink); color: #fff; }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid rgba(243, 244, 248, 0.5); }
+    .btn-ghost:hover { background: rgba(243, 244, 248, 0.14); }
     .btn-sm { padding: 10px 24px; font-size: 0.85rem; }
 
-    /* Slot de mídia: substituir cada bloco .media-slot pelo asset final */
-    .media-slot {
-      position: relative;
-      border: 1.5px dashed #c9c9d2;
-      border-radius: var(--r-media);
-      background: repeating-linear-gradient(45deg, #f7f7f9, #f7f7f9 14px, #f2f2f5 14px, #f2f2f5 28px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-    .media-slot .tag {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.5;
-      max-width: 34ch;
-    }
-    .media-slot .tag b {
-      display: block;
-      color: var(--ink);
-      font-size: 0.85rem;
-      margin-bottom: 4px;
-      letter-spacing: 0.04em;
-    }
-
-    /* Nav: uma linha, 68px */
+    /* Nav sobre o filme */
     header {
-      position: sticky; top: 0; z-index: 10;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 20;
       height: 68px;
-      background: rgba(252, 252, 253, 0.88);
+      background: rgba(11, 12, 15, 0.55);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
     }
@@ -93,174 +68,113 @@
     .nav-links a { text-decoration: none; }
     .nav-links a:hover { color: var(--ink); }
 
-    /* 02 Hero: cinema pinado com scrub por scroll (bloco escuro deliberado, único da página) */
-    .cinema { height: 400vh; position: relative; background: #0b0c0f; }
+    /* O filme: secao pinada que ocupa quase todo o site.
+       A altura define o ritmo do scroll; os capitulos usam frações dela. */
+    .cinema { height: 920vh; position: relative; background: var(--bg); }
     .cinema-stage {
       position: sticky; top: 0; height: 100dvh;
-      overflow: hidden; display: flex; align-items: center;
+      overflow: hidden;
     }
-    .cinema-stage video, .cinema-stage canvas, .cinema-stage .poster {
+    .cinema-stage .poster,
+    .cinema-stage video,
+    .cinema-stage canvas {
       position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
     }
-    .cinema-scrim {
-      position: absolute; inset: 0; pointer-events: none;
-      background:
-        linear-gradient(90deg, rgba(11, 12, 15, 0.88) 0%, rgba(11, 12, 15, 0.55) 34%, transparent 62%),
-        linear-gradient(0deg, rgba(11, 12, 15, 0.72) 0%, transparent 32%);
+
+    /* Capitulos: cada especificacao entra e sai conforme o progresso do filme.
+       data-start / data-end (fracoes de 0 a 1) controlam quando cada um aparece. */
+    .chapter {
+      position: absolute; inset: 0;
+      display: flex; align-items: center;
+      opacity: 0; pointer-events: none;
     }
-    .cinema-copy {
+    .chapter .scrim { position: absolute; inset: 0; pointer-events: none; }
+    .ch-left .scrim {
+      background: linear-gradient(90deg, rgba(11, 12, 15, 0.9) 0%, rgba(11, 12, 15, 0.55) 34%, transparent 62%);
+    }
+    .ch-right .scrim {
+      background: linear-gradient(270deg, rgba(11, 12, 15, 0.9) 0%, rgba(11, 12, 15, 0.55) 34%, transparent 62%);
+    }
+    .ch-center .scrim {
+      background: linear-gradient(0deg, rgba(11, 12, 15, 0.92) 0%, rgba(11, 12, 15, 0.5) 36%, transparent 64%);
+    }
+    .chapter-copy {
       position: relative; width: 100%; max-width: 1200px;
-      margin: 0 auto; padding: 0 24px; color: #f3f4f8;
-      transition: opacity 0.2s linear;
+      margin: 0 auto; padding: 0 24px;
+      pointer-events: auto;
     }
+    .chapter-copy > * { max-width: 46ch; }
+    .ch-right .chapter-copy > * { margin-left: auto; }
+    .ch-center { align-items: flex-end; }
+    .ch-center .chapter-copy { text-align: center; padding-bottom: 13vh; }
+    .ch-center .chapter-copy > * { margin-left: auto; margin-right: auto; }
+
     .eyebrow {
       font-size: 0.72rem; font-weight: 700;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 18px;
+      color: var(--accent); margin-bottom: 16px;
     }
     h1 {
       font-size: clamp(2rem, 4.2vw, 3.2rem);
       line-height: 1.1; font-weight: 800; letter-spacing: -0.02em;
-      margin-bottom: 18px;
+      margin-bottom: 18px; max-width: 15ch;
     }
-    .cinema-copy h1 { max-width: 15ch; }
-    .hero-sub { color: var(--muted); font-size: 1.08rem; max-width: 44ch; margin-bottom: 30px; }
-    .cinema-copy .hero-sub { color: #c6c9d4; }
-    .cinema-copy .btn { background: #f3f4f8; color: #101116; }
-    .cinema-copy .btn:hover { background: #fff; }
-    .cinema-copy .btn-ghost { background: transparent; color: #f3f4f8; border: 1px solid rgba(243, 244, 248, 0.5); }
-    .cinema-copy .btn-ghost:hover { background: rgba(243, 244, 248, 0.14); }
+    .chapter h2 {
+      font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+      line-height: 1.12; font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 16px; max-width: 18ch;
+    }
+    .chapter p.body { color: #c6c9d4; font-size: 1.05rem; margin-bottom: 26px; }
+    .chapter-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+    .ch-right .chapter-stats { justify-content: flex-end; }
+    .ch-center .chapter-stats { justify-content: center; }
+    .chapter-stats b {
+      display: block; font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+      color: var(--accent);
+    }
+    .chapter-stats span { color: var(--muted); font-size: 0.85rem; }
     .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
-    @media (prefers-reduced-motion: reduce) {
-      .cinema { height: auto; }
-      .cinema-stage { position: relative; height: 100dvh; }
+    .ch-center .cta-row { justify-content: center; }
+
+    .scroll-cue { margin-top: 44px; color: var(--muted); font-size: 0.82rem; }
+    .scroll-cue::after {
+      content: ""; display: block; width: 10px; height: 10px;
+      margin-top: 10px;
+      border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+      transform: rotate(45deg);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .scroll-cue::after { animation: cue 1.6s ease-in-out infinite; }
+      @keyframes cue {
+        0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 1; }
+        50% { transform: rotate(45deg) translate(5px, 5px); opacity: 0.4; }
+      }
     }
 
-    section { padding: 88px 0; }
-    h2 {
+    /* Trilha de capitulos */
+    .dots {
+      position: absolute; right: 26px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 12px; z-index: 5;
+    }
+    .dots button {
+      width: 9px; height: 9px; border-radius: 50%;
+      border: none; padding: 0; cursor: pointer;
+      background: rgba(243, 244, 248, 0.28);
+      transition: background 0.25s, transform 0.25s;
+    }
+    .dots button.on { background: var(--accent); transform: scale(1.35); }
+
+    /* Secoes de apoio depois do filme */
+    section.after { padding: 96px 0; }
+    section.after h2 {
       font-size: clamp(1.6rem, 3.2vw, 2.3rem);
       font-weight: 800; letter-spacing: -0.02em; line-height: 1.15;
       margin-bottom: 14px;
     }
     .lead { color: var(--muted); max-width: 62ch; }
 
-    /* 03 Destaques: bento 5 células */
-    .bento {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 16px;
-      margin-top: 40px;
-    }
-    .cell {
-      border-radius: var(--r-media);
-      padding: 28px;
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-    .cell h3 { font-size: 1.05rem; margin-bottom: 8px; }
-    .cell p { color: var(--muted); font-size: 0.9rem; }
-    .cell-media { grid-column: span 3; grid-row: span 2; padding: 0; border: none; display: flex; }
-    .cell-media .media-slot { flex: 1; min-height: 320px; }
-    .cell-a { grid-column: span 3; background: var(--accent-soft); border-color: transparent; }
-    .cell-a h3 { color: var(--accent); }
-    .cell-b { grid-column: span 3; }
-    .cell-c { grid-column: span 3; background: var(--panel); border-color: transparent; }
-    .cell-d { grid-column: span 3; }
-
-    /* 04 Design: mídia full-width + texto empilhado + detalhes assimétricos */
-    .design-media { aspect-ratio: 21/9; margin: 40px 0 48px; }
-    .detail-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
-    .detail h3 { font-size: 1rem; margin-bottom: 8px; }
-    .detail p { color: var(--muted); font-size: 0.92rem; }
-
-    /* 05 Performance: comparação tipográfica */
-    .perf {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
-      align-items: center; background: var(--panel);
-      border-radius: var(--r-media); padding: 56px 48px;
-    }
-    .perf-nums { display: grid; gap: 28px; }
-    .perf-num b { display: block; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-    .perf-num.hi b { color: var(--accent); }
-    .perf-num span { color: var(--muted); font-size: 0.88rem; }
-
-    /* 06 Personalização: split texto + demo real */
-    .custom-grid { display: grid; grid-template-columns: 6fr 5fr; gap: 56px; align-items: start; }
-    .feature-list { margin-top: 26px; list-style: none; }
-    .feature-list li { padding: 14px 0; color: var(--muted); font-size: 0.95rem; }
-    .feature-list li + li { border-top: 1px solid var(--line); }
-    .feature-list b { color: var(--ink); }
-    .demo {
-      background: #fff; border: 1px solid var(--line);
-      border-radius: var(--r-media); padding: 30px;
-    }
-    .demo p { color: var(--muted); font-size: 0.85rem; margin-bottom: 18px; }
-    .demo-keys { display: flex; gap: 10px; justify-content: center; }
-    .demo-key {
-      flex: 1; max-width: 74px; aspect-ratio: 1;
-      border-radius: 8px; border: 1px solid var(--line); border-bottom-width: 4px;
-      background: var(--panel); color: var(--ink);
-      font-family: inherit; font-size: 0.72rem; font-weight: 600;
-      cursor: pointer; transition: transform 0.12s, border-color 0.2s;
-    }
-    .demo-key:hover { border-color: var(--accent); }
-    .demo-key:active { transform: translateY(2px); }
-    .demo small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.75rem; text-align: center; }
-    .swap-media { aspect-ratio: 16/9; margin-top: 20px; }
-
-    /* 07 Bateria: full-bleed com scrim */
-    .battery {
-      position: relative; border-radius: var(--r-media); overflow: hidden;
-      min-height: 440px; display: flex; align-items: flex-end;
-    }
-    .battery .media-slot {
-      position: absolute; inset: 0; border-radius: 0; border: none;
-      align-items: flex-start; padding-top: 48px;
-    }
-    .battery-inner {
-      position: relative; width: 100%;
-      padding: 180px 40px 44px;
-      background: linear-gradient(180deg, transparent, rgba(17, 17, 19, 0.82) 75%);
-      color: #fff;
-    }
-    .battery-inner b {
-      display: block;
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      font-weight: 800; letter-spacing: -0.03em; line-height: 1;
-    }
-    .battery-inner p { color: #e6e6ec; max-width: 58ch; margin-top: 12px; }
-
-    /* 08 Multi-dispositivo: split lista + mídia */
-    .multi-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 56px; align-items: center; }
-    .multi-list { margin-top: 24px; list-style: none; }
-    .multi-list li { padding: 12px 0; color: var(--muted); font-size: 0.95rem; }
-    .multi-list li + li { border-top: 1px solid var(--line); }
-    .multi-list b { color: var(--ink); }
-    .multi-media { aspect-ratio: 16/10; }
-
-    /* 09 Como funciona: passos com verbo + slot 1:1 */
-    .steps { margin-top: 44px; }
-    .step {
-      display: grid; grid-template-columns: 140px 200px 1fr;
-      gap: 28px; padding: 30px 0; align-items: center;
-    }
-    .step + .step { border-top: 1px solid var(--line); }
-    .step h3 { font-size: 1.3rem; font-weight: 800; }
-    .step .media-slot { aspect-ratio: 1; padding: 10px; }
-    .step .media-slot .tag { font-size: 0.68rem; }
-    .step .media-slot .tag b { font-size: 0.72rem; }
-    .step p { color: var(--muted); font-size: 0.95rem; }
-
-    /* 10 Comparativo */
-    .switch-media { aspect-ratio: 21/9; margin: 40px 0; }
-    .sw-wrap { overflow-x: auto; }
-    .sw-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
-    .sw-table th, .sw-table td { text-align: left; padding: 14px 16px; }
-    .sw-table thead th { font-size: 1.05rem; font-weight: 800; border-bottom: 2px solid var(--ink); }
-    .sw-table tbody th { color: var(--muted); font-weight: 500; width: 150px; }
-    .sw-note { color: var(--muted); font-size: 0.85rem; margin-top: 20px; }
-
-    /* 11 Especificações: 3 blocos agrupados */
     .spec-clusters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 44px; }
     .cluster h3 {
       font-size: 0.78rem; font-weight: 700;
@@ -272,7 +186,14 @@
     .cluster dd { color: var(--ink); }
     .spec-note { color: var(--muted); font-size: 0.85rem; margin-top: 32px; }
 
-    /* 12 Confiança */
+    .sw-wrap { overflow-x: auto; margin-top: 40px; }
+    .sw-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+    .sw-table th, .sw-table td { text-align: left; padding: 14px 16px; }
+    .sw-table thead th { font-size: 1.05rem; font-weight: 800; border-bottom: 2px solid var(--ink); }
+    .sw-table tbody tr + tr { border-top: 1px solid var(--line); }
+    .sw-table tbody th { color: var(--muted); font-weight: 500; width: 150px; }
+    .sw-note { color: var(--muted); font-size: 0.85rem; margin-top: 20px; }
+
     .trust {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
       padding: 52px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
@@ -280,31 +201,41 @@
     .trust h3 { font-size: 0.98rem; margin-bottom: 6px; }
     .trust p { color: var(--muted); font-size: 0.88rem; }
 
-    /* 13 CTA final */
-    .final { text-align: center; padding: 110px 0; }
-    .final .lead { margin: 0 auto 32px; }
-    .final-media { aspect-ratio: 21/9; max-width: 760px; margin: 44px auto 0; }
-    .final small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.8rem; }
-
-    footer { border-top: 1px solid var(--line); padding: 34px 0; color: var(--muted); font-size: 0.78rem; }
+    footer { padding: 34px 0 44px; color: var(--muted); font-size: 0.78rem; }
     footer p + p { margin-top: 6px; }
 
-    /* Reveal com reduced-motion */
     @media (prefers-reduced-motion: no-preference) {
       .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
       .reveal.in { opacity: 1; transform: none; }
     }
 
+    /* Sem animacao: o filme vira poster e os capitulos empilham como secoes */
+    @media (prefers-reduced-motion: reduce) {
+      .cinema { height: auto; }
+      .cinema-stage { position: relative; height: auto; overflow: visible; }
+      .cinema-stage .poster { position: relative; height: 64vh; }
+      .cinema-stage video, .cinema-stage canvas, .dots, .scroll-cue { display: none; }
+      .chapter {
+        position: relative; opacity: 1; pointer-events: auto;
+        padding: 72px 0; display: block; background: var(--bg);
+      }
+      .chapter .scrim { display: none; }
+      .ch-center .chapter-copy { padding-bottom: 0; }
+    }
+
     @media (max-width: 860px) {
       .nav-links { display: none; }
-      .hero-grid, .custom-grid, .multi-grid, .perf { grid-template-columns: 1fr; gap: 32px; }
-      .bento { grid-template-columns: 1fr; }
-      .cell-media, .cell-a, .cell-b, .cell-c, .cell-d { grid-column: span 1; grid-row: span 1; }
-      .detail-grid, .spec-clusters, .trust { grid-template-columns: 1fr; gap: 28px; }
-      .step { grid-template-columns: 1fr; gap: 12px; }
-      .step .media-slot { max-width: 200px; }
-      section { padding: 60px 0; }
-      .battery { min-height: 380px; }
+      .cinema { height: 760vh; }
+      .chapter, .ch-center { align-items: flex-end; }
+      .chapter-copy { padding-bottom: 12vh; }
+      .ch-right .chapter-copy > * { margin-left: 0; }
+      .ch-right .chapter-stats { justify-content: flex-start; }
+      .ch-left .scrim, .ch-right .scrim, .ch-center .scrim {
+        background: linear-gradient(0deg, rgba(11, 12, 15, 0.92) 0%, rgba(11, 12, 15, 0.55) 38%, transparent 66%);
+      }
+      .dots { right: 14px; }
+      .spec-clusters, .trust { grid-template-columns: 1fr; gap: 28px; }
+      section.after { padding: 64px 0; }
     }
   </style>
 </head>
@@ -315,237 +246,132 @@
     <div class="wrap nav">
       <div class="logo">Keychron</div>
       <nav class="nav-links">
-        <a href="#design">Design</a>
-        <a href="#personalizacao">Personalização</a>
-        <a href="#comparar">Comparar</a>
-        <a href="#especificacoes">Especificações</a>
+        <a href="#ficha">Ficha técnica</a>
+        <a href="#comparar">Switches</a>
       </nav>
       <a class="btn btn-sm" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
     </div>
   </header>
 
   <main>
-    <!-- 02 HERO: animacao scrub por scroll.
+    <!-- 02 O FILME: o site inteiro e uma animacao de scroll.
+         O video avanca com a rolagem e cada especificacao entra como capitulo,
+         sincronizada com a cena (teclado inteiro, teclas suspensas, knob, remontagem).
          Sequencia de frames: rode scripts/extract-frames.sh e commite assets/sequence/;
-         o carregador troca automaticamente do video para os frames quando existirem. -->
+         a pagina troca sozinha do video para os frames quando existirem.
+         Ajuste fino: mude data-start / data-end de cada capitulo (fracoes de 0 a 1). -->
     <section class="cinema" id="cinema">
       <div class="cinema-stage">
-        <img class="poster" src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260824_190850_d939325f-bc7c-41a1-b891-d13a66927382.png" alt="Teclado mecânico compacto visto de cima com brilho laranja sob o case">
+        <img class="poster" src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260824_190850_d939325f-bc7c-41a1-b891-d13a66927382.png" alt="Teclado mecânico visto de cima com brilho laranja sob o case">
         <video id="scrub-video" muted playsinline preload="auto" crossorigin="anonymous" src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260824_192819_01f9ed6f-d254-4559-8d0c-099479d28cd6.mp4"></video>
         <canvas id="scrub-canvas" hidden></canvas>
-        <div class="cinema-scrim"></div>
-        <div class="cinema-copy" id="cinema-copy">
-          <p class="eyebrow">Wireless QMK · Bluetooth e 2.4 GHz</p>
-          <h1>O teclado que se adapta ao seu jeito de digitar</h1>
-          <p class="hero-sub">Full-size com knob, hot-swap e wireless de 1000 Hz. Cada tecla e macro configurada por você, direto no navegador.</p>
-          <div class="cta-row">
-            <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
-            <a class="btn btn-ghost" href="#especificacoes">Ver especificações</a>
+
+        <!-- Capitulo 1: abertura, teclado inteiro -->
+        <div class="chapter ch-left" data-start="0" data-end="0.12">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Wireless QMK · Bluetooth e 2.4 GHz</p>
+            <h1>O teclado que se adapta ao seu jeito de digitar</h1>
+            <p class="body">Full-size com knob, hot-swap e wireless de 1000 Hz. Cada tecla e macro configurada por você, direto no navegador.</p>
+            <div class="cta-row">
+              <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
+              <a class="btn btn-ghost" href="#ficha">Ver ficha técnica</a>
+            </div>
+            <p class="scroll-cue">Role para conhecer cada detalhe</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 03 DESTAQUES -->
-    <section>
-      <div class="wrap reveal">
-        <h2>O essencial em cinco pontos</h2>
-        <div class="bento">
-          <!-- TODO SLOT M2: closeup receptor 2.4 GHz ou teclado em uso, 3:4 vertical -->
-          <div class="cell cell-media">
-            <div class="media-slot">
-              <p class="tag"><b>SLOT M2 · Destaque</b>Closeup do receptor 2.4 GHz conectado, orientação vertical.</p>
+        <!-- Capitulo 2: conexao -->
+        <div class="chapter ch-right" data-start="0.12" data-end="0.27">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Conexão</p>
+            <h2>1000 Hz sem fio</h2>
+            <p class="body">No modo 2.4 GHz, cada acionamento chega ao computador mil vezes por segundo, a mesma resposta de um teclado com fio. Bluetooth 5.1 segura até três dispositivos e o USB-C assume quando você quiser cabo.</p>
+            <div class="chapter-stats">
+              <div><b>1000 Hz</b><span>no 2.4 GHz e no cabo</span></div>
+              <div><b>3</b><span>dispositivos no Bluetooth</span></div>
             </div>
           </div>
-          <div class="cell cell-a">
-            <h3>1000 Hz sem fio</h3>
-            <p>O modo 2.4 GHz responde na mesma velocidade de um teclado com fio.</p>
-          </div>
-          <div class="cell cell-b">
-            <h3>Até 300 h de bateria</h3>
-            <p>4000 mAh que seguram semanas de trabalho longe do carregador.</p>
-          </div>
-          <div class="cell cell-c">
-            <h3>Hot-swap sem solda</h3>
-            <p>Troque os switches em minutos com o extrator que vem na caixa.</p>
-          </div>
-          <div class="cell cell-d">
-            <h3>QMK e VIA no navegador</h3>
-            <p>Remapeie tudo pelo Keychron Launcher, sem instalar nada. Som de custom direto de fábrica.</p>
-          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 04 DESIGN -->
-    <section id="design">
-      <div class="wrap reveal">
-        <h2>Construído como os customs de bancada</h2>
-        <p class="lead">A placa fica suspensa em gaskets flexíveis e camadas de espuma IXPE, PET e látex preenchem o interior. O resultado aparece no toque e no som, mais grave e uniforme.</p>
-        <!-- TODO SLOT M3: vista explodida das camadas ou macro das keycaps, 21:9 -->
-        <div class="media-slot design-media">
-          <p class="tag"><b>SLOT M3 · Design</b>Vista explodida das camadas (keycaps, switches, placa, espumas, case) ou macro das keycaps OSA, 21:9.</p>
-        </div>
-        <div class="detail-grid">
-          <div class="detail">
-            <h3>Keycaps PBT double-shot, perfil OSA</h3>
-            <p>As legendas são moldadas em duas camadas de plástico e nunca apagam. O topo esférico mantém o conforto em sessões longas.</p>
-          </div>
-          <div class="detail">
-            <h3>Knob de metal</h3>
-            <p>Volume de fábrica, qualquer outra função depois de dois minutos no Launcher.</p>
-          </div>
-          <div class="detail">
-            <h3>Estabilizadores parafusados</h3>
-            <p>Teclas longas com menos chacoalho e som consistente.</p>
+        <!-- Capitulo 3: hot-swap, sincronizado com as teclas suspensas -->
+        <div class="chapter ch-left" data-start="0.27" data-end="0.42">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Hot-swap</p>
+            <h2>Troque os switches sem solda</h2>
+            <p class="body">Os sockets aceitam qualquer switch MX de 3 ou 5 pinos. Os Gateron Jupiter saem de fábrica lubrificados, nas versões Red, Brown e Banana.</p>
+            <div class="chapter-stats">
+              <div><b>80 milhões</b><span>de acionamentos por switch</span></div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 05 PERFORMANCE -->
-    <section>
-      <div class="wrap reveal">
-        <div class="perf">
-          <div>
-            <h2>Wireless com resposta de teclado com fio</h2>
-            <p class="lead">No modo 2.4 GHz, o V6 Max reporta cada acionamento mil vezes por segundo. Com NKRO, todas as teclas pressionadas ao mesmo tempo são registradas.</p>
-          </div>
-          <div class="perf-nums">
-            <div class="perf-num"><b>125 Hz</b><span>taxa típica de teclados Bluetooth comuns</span></div>
-            <div class="perf-num hi"><b>1000 Hz</b><span>V6 Max no modo 2.4 GHz e no cabo</span></div>
+        <!-- Capitulo 4: construcao, teclado aberto -->
+        <div class="chapter ch-right" data-start="0.42" data-end="0.56">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Construção</p>
+            <h2>Montagem gasket, som de custom</h2>
+            <p class="body">A placa de policarbonato fica suspensa em gaskets flexíveis, com camadas de espuma IXPE, PET e látex por dentro. As keycaps PBT double-shot têm legendas moldadas que não apagam com o uso.</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 06 PERSONALIZACAO -->
-    <section id="personalizacao">
-      <div class="wrap">
-        <div class="custom-grid reveal">
-          <div>
+        <!-- Capitulo 5: knob, sincronizado com a cena da rodinha -->
+        <div class="chapter ch-left" data-start="0.56" data-end="0.7">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Knob</p>
+            <h2>Um giro para o que você mais usa</h2>
+            <p class="body">O knob de metal chega controlando volume. No Keychron Launcher ele vira zoom, avanço de timeline, brilho ou qualquer outra função, em dois minutos.</p>
+          </div>
+        </div>
+
+        <!-- Capitulo 6: QMK, remontagem comecando -->
+        <div class="chapter ch-right" data-start="0.7" data-end="0.81">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">QMK e VIA</p>
             <h2>Seu layout, suas regras</h2>
-            <p class="lead">O firmware é QMK, código aberto usado pela comunidade custom. Você abre o Keychron Launcher no navegador, conecta o teclado e redesenha o layout inteiro, sem instalar programa e sem criar conta.</p>
-            <ul class="feature-list">
-              <li><b>Remap total.</b> Qualquer tecla vira qualquer função, em todas as camadas.</li>
-              <li><b>Macros.</b> Sequências que você repete todo dia em um único toque.</li>
-              <li><b>Memória interna.</b> A configuração vai com o teclado para qualquer computador.</li>
-              <li><b>Hot-swap.</b> Os sockets aceitam qualquer switch MX de 3 ou 5 pinos, sem solda.</li>
-            </ul>
+            <p class="body">O firmware é QMK, código aberto usado pela comunidade custom. Você abre o Keychron Launcher no navegador, remapeia teclas, cria macros e camadas, e tudo fica gravado na memória do teclado.</p>
           </div>
-          <div>
-            <div class="demo" aria-label="Demonstração de remapeamento">
-              <p>Toque em uma tecla e veja o remap acontecer:</p>
-              <div class="demo-keys">
-                <button class="demo-key" type="button">F13</button>
-                <button class="demo-key" type="button">Copiar</button>
-                <button class="demo-key" type="button">Macro</button>
-                <button class="demo-key" type="button">Vol +</button>
-                <button class="demo-key" type="button">Camada 2</button>
-              </div>
-              <small>No teclado real, isso acontece no Keychron Launcher, pelo navegador.</small>
-            </div>
-            <!-- TODO SLOT M4: video 10s das maos trocando um switch, sem corte, 16:9 -->
-            <div class="media-slot swap-media">
-              <p class="tag"><b>SLOT M4 · Hot-swap</b>Vídeo de 10 s da troca de um switch com o extrator, plano fechado, 16:9.</p>
+        </div>
+
+        <!-- Capitulo 7: bateria, teclado quase remontado -->
+        <div class="chapter ch-left" data-start="0.81" data-end="0.91">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Bateria</p>
+            <h2>Até 300 horas longe da tomada</h2>
+            <p class="body">São 4000 mAh: semanas de trabalho com o backlight desligado, cerca de 100 horas com a iluminação RGB moderada. O USB-C recarrega enquanto você digita.</p>
+            <div class="chapter-stats">
+              <div><b>300 h</b><span>sem backlight</span></div>
+              <div><b>4000 mAh</b><span>de bateria</span></div>
             </div>
           </div>
         </div>
+
+        <!-- Capitulo 8: fechamento, teclado inteiro de novo -->
+        <div class="chapter ch-center" data-start="0.91" data-end="1">
+          <div class="scrim"></div>
+          <div class="chapter-copy">
+            <p class="eyebrow">Disponível na Amazon</p>
+            <h2>Digite melhor a partir de hoje</h2>
+            <p class="body">Versões Red, Brown e Banana, layout ANSI na cor Carbon Black, com knob incluso.</p>
+            <div class="cta-row">
+              <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
+              <a class="btn btn-ghost" href="#ficha">Ver ficha técnica</a>
+            </div>
+          </div>
+        </div>
+
+        <nav class="dots" aria-label="Capítulos"></nav>
       </div>
     </section>
 
-    <!-- 07 BATERIA -->
-    <section>
-      <div class="wrap reveal">
-        <div class="battery">
-          <!-- TODO SLOT M5: foto ambientada do teclado sem cabo, home office ao entardecer, 21:9 -->
-          <div class="media-slot">
-            <p class="tag"><b>SLOT M5 · Bateria</b>Foto ambientada, teclado sem cabo em mesa de madeira ao entardecer, 21:9. O gradiente escuro do texto já está aplicado por cima.</p>
-          </div>
-          <div class="battery-inner">
-            <b>Até 300 horas de bateria</b>
-            <p>Com o backlight desligado, os 4000 mAh seguram semanas de trabalho. Com luz moderada, cerca de 100 horas, e o USB-C recarrega enquanto você digita.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 08 MULTI-DISPOSITIVO -->
-    <section>
-      <div class="wrap">
-        <div class="multi-grid reveal">
-          <div>
-            <h2>Um teclado para a mesa inteira</h2>
-            <p class="lead">Pelo Bluetooth 5.1, o V6 Max mantém até três dispositivos pareados, e a troca é um atalho: Fn mais 1, 2 ou 3.</p>
-            <ul class="multi-list">
-              <li><b>Desktop</b> no receptor 2.4 GHz, para latência mínima</li>
-              <li><b>Notebook e tablet</b> no Bluetooth, com troca por atalho</li>
-              <li><b>USB-C</b> quando quiser fio ou precisar carregar</li>
-            </ul>
-          </div>
-          <!-- TODO SLOT M6: cena com teclado ao centro e 3 aparelhos ao redor, 16:10 -->
-          <div class="media-slot multi-media">
-            <p class="tag"><b>SLOT M6 · Multi-dispositivo</b>Teclado ao centro com desktop, notebook e tablet ao redor, 16:10. Detalhe alternativo: closeup dos seletores laterais.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 09 COMO FUNCIONA -->
-    <section>
-      <div class="wrap reveal">
-        <h2>Da caixa ao seu layout</h2>
-        <div class="steps">
-          <div class="step">
-            <h3>Conecte</h3>
-            <!-- TODO SLOT M7a: mao movendo o seletor lateral, 1:1 -->
-            <div class="media-slot"><p class="tag"><b>SLOT M7a</b>Mão no seletor lateral, 1:1</p></div>
-            <p>Mova o seletor para 2.4 GHz com o receptor incluso, pareie por Bluetooth ou use o cabo USB-C. A chave ao lado ajusta o teclado para Mac ou Windows.</p>
-          </div>
-          <div class="step">
-            <h3>Configure</h3>
-            <!-- TODO SLOT M7b: tela do navegador com o teclado ao lado, 1:1 -->
-            <div class="media-slot"><p class="tag"><b>SLOT M7b</b>Navegador com o Launcher e teclado ao lado, 1:1</p></div>
-            <p>Abra o Keychron Launcher, conecte o teclado e ajuste teclas, camadas, macros e a função do knob. Tudo fica gravado na memória interna.</p>
-          </div>
-          <div class="step">
-            <h3>Troque</h3>
-            <!-- TODO SLOT M7c: extrator removendo um switch, 1:1 -->
-            <div class="media-slot"><p class="tag"><b>SLOT M7c</b>Extrator removendo um switch, 1:1</p></div>
-            <p>Com os extratores da caixa, keycaps e switches saem sem solda. Os Gateron Jupiter aguentam até 80 milhões de acionamentos.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 COMPARATIVO -->
-    <section id="comparar">
-      <div class="wrap reveal">
-        <h2>Qual Gateron Jupiter combina com você</h2>
-        <p class="lead">Os três switches disponíveis mudam o toque do teclado, e a escolha depende do que você faz com ele o dia inteiro.</p>
-        <!-- TODO SLOT M8: trio de switches lado a lado, hastes vermelha, marrom e amarela, 21:9 -->
-        <div class="media-slot switch-media">
-          <p class="tag"><b>SLOT M8 · Comparativo</b>Três switches em pé lado a lado, hastes vermelha, marrom e amarela, enquadramento idêntico, 21:9.</p>
-        </div>
-        <div class="sw-wrap">
-          <table class="sw-table">
-            <thead>
-              <tr><th></th><th>Red</th><th>Brown</th><th>Banana</th></tr>
-            </thead>
-            <tbody>
-              <tr><th>Tipo</th><td>Linear</td><td>Tátil</td><td>Tátil pesado</td></tr>
-              <tr><th>Sensação</th><td>Curso liso, sem degrau</td><td>Degrau leve no acionamento</td><td>Degrau firme e mais resistente</td></tr>
-              <tr><th>Som</th><td>Mais baixo</td><td>Médio</td><td>Médio, mais encorpado</td></tr>
-              <tr><th>Indicado para</th><td>Jogos e digitação leve</td><td>Uso misto, o mais versátil</td><td>Quem digita forte e quer feedback claro</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="sw-note">Existe também a versão barebone, sem switches e keycaps, para quem quer montar do zero. As três variantes estão na página do produto na Amazon.</p>
-      </div>
-    </section>
-
-    <!-- 11 ESPECIFICACOES -->
-    <section id="especificacoes">
+    <!-- 03 FICHA TECNICA -->
+    <section class="after" id="ficha">
       <div class="wrap reveal">
         <h2>Especificações</h2>
         <p class="lead">Ficha técnica da versão Fully Assembled Knob, layout ANSI, em três blocos.</p>
@@ -582,7 +408,29 @@
       </div>
     </section>
 
-    <!-- 12 CONFIANCA -->
+    <!-- 04 COMPARATIVO DE SWITCHES -->
+    <section class="after" id="comparar">
+      <div class="wrap reveal">
+        <h2>Qual Gateron Jupiter combina com você</h2>
+        <p class="lead">Os três switches disponíveis mudam o toque do teclado, e a escolha depende do que você faz com ele o dia inteiro.</p>
+        <div class="sw-wrap">
+          <table class="sw-table">
+            <thead>
+              <tr><th></th><th>Red</th><th>Brown</th><th>Banana</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Tipo</th><td>Linear</td><td>Tátil</td><td>Tátil pesado</td></tr>
+              <tr><th>Sensação</th><td>Curso liso, sem degrau</td><td>Degrau leve no acionamento</td><td>Degrau firme e mais resistente</td></tr>
+              <tr><th>Som</th><td>Mais baixo</td><td>Médio</td><td>Médio, mais encorpado</td></tr>
+              <tr><th>Indicado para</th><td>Jogos e digitação leve</td><td>Uso misto, o mais versátil</td><td>Quem digita forte e quer feedback claro</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="sw-note">Existe também a versão barebone, sem switches e keycaps, para quem quer montar do zero. As três variantes estão na página do produto na Amazon.</p>
+      </div>
+    </section>
+
+    <!-- 05 CONFIANCA -->
     <div class="wrap reveal">
       <div class="trust">
         <div>
@@ -599,23 +447,9 @@
         </div>
       </div>
     </div>
-
-    <!-- 13 CTA FINAL -->
-    <section class="final">
-      <div class="wrap reveal">
-        <h2>Digite melhor a partir de hoje</h2>
-        <p class="lead">O V6 Max está disponível nas versões Red, Brown e Banana. Confira o preço atual e o prazo de entrega na página do produto.</p>
-        <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
-        <small>Layout ANSI na cor Carbon Black, com knob incluso.</small>
-        <!-- TODO SLOT M9: vinheta em video do teclado com RGB ciclando, loop, 21:9 -->
-        <div class="media-slot final-media">
-          <p class="tag"><b>SLOT M9 · Fechamento</b>Vinheta em vídeo do teclado com RGB ciclando devagar, loop, 21:9.</p>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- 14 RODAPE -->
+  <!-- 06 RODAPE -->
   <footer>
     <div class="wrap">
       <p>Página de demonstração. Keychron e V6 Max são marcas de seus respectivos donos.</p>
@@ -627,15 +461,14 @@
     (function () {
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      /* Hero cinema: scrub por scroll.
+      /* O filme: scrub por scroll no site inteiro.
          Modo 1: sequencia de frames em assets/sequence/ (rodar scripts/extract-frames.sh).
          Modo 2: fallback controlando currentTime do video hospedado.
-         Reduced motion: poster estatico, sem scrub. */
+         Reduced motion: poster estatico e capitulos empilhados, sem scrub. */
       (function () {
         var section = document.getElementById("cinema");
         var video = document.getElementById("scrub-video");
         var canvas = document.getElementById("scrub-canvas");
-        var copy = document.getElementById("cinema-copy");
         if (!section || reduce) { if (video) video.remove(); if (canvas) canvas.remove(); return; }
 
         var FRAME_COUNT = 120;
@@ -646,9 +479,34 @@
         var frames = [];
         var ctx = null;
         var duration = 10;
-        var progress = 0;
+        var progress = -1;
         var visible = false;
         var rafId = null;
+
+        var chapterEls = Array.prototype.slice.call(section.querySelectorAll(".chapter"));
+        var chapters = chapterEls.map(function (el) {
+          return {
+            el: el,
+            copy: el.querySelector(".chapter-copy"),
+            start: parseFloat(el.getAttribute("data-start")),
+            end: parseFloat(el.getAttribute("data-end"))
+          };
+        });
+
+        var dotsNav = section.querySelector(".dots");
+        var dots = chapters.map(function (c, i) {
+          var b = document.createElement("button");
+          b.type = "button";
+          var title = c.el.querySelector("h1, h2");
+          b.setAttribute("aria-label", "Capítulo " + (i + 1) + (title ? ": " + title.textContent : ""));
+          b.addEventListener("click", function () {
+            var total = section.offsetHeight - window.innerHeight;
+            var mid = c.start + (c.end - c.start) * 0.5;
+            window.scrollTo({ top: section.offsetTop + total * mid, behavior: "smooth" });
+          });
+          dotsNav.appendChild(b);
+          return b;
+        });
 
         function drawFrame(p) {
           var idx = Math.max(1, Math.min(FRAME_COUNT, Math.round(p * (FRAME_COUNT - 1)) + 1));
@@ -664,9 +522,29 @@
           ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
         }
 
+        function applyChapters(p) {
+          var activeIdx = -1;
+          chapters.forEach(function (c, i) {
+            var len = c.end - c.start;
+            var fade = Math.max(0.008, len * 0.24);
+            var oIn = c.start <= 0 ? 1 : (p - c.start) / fade;
+            var oOut = c.end >= 1 ? 1 : (c.end - p) / fade;
+            var o = Math.max(0, Math.min(1, Math.min(oIn, oOut)));
+            c.el.style.opacity = String(o);
+            c.copy.style.pointerEvents = o > 0.4 ? "auto" : "none";
+            if (o > 0) {
+              var local = Math.max(0, Math.min(1, (p - c.start) / len));
+              c.copy.style.transform = "translateY(" + ((0.5 - local) * 40).toFixed(1) + "px)";
+            }
+            if (p >= c.start && p < c.end) activeIdx = i;
+          });
+          if (p >= 1) activeIdx = chapters.length - 1;
+          dots.forEach(function (d, i) { d.classList.toggle("on", i === activeIdx); });
+        }
+
         function apply(p) {
           progress = p;
-          copy.style.opacity = String(Math.max(0, 1 - p * 3.2));
+          applyChapters(p);
           if (mode === "frames") { drawFrame(p); return; }
           if (video && video.readyState >= 1) {
             var d = video.duration || duration;
@@ -701,10 +579,11 @@
             img.src = framePath(i);
             frames[i] = img;
           }
-          frames[1].onload = function () { drawFrame(progress); };
+          frames[1].onload = function () { drawFrame(Math.max(0, progress)); };
         };
         probe.src = framePath(1);
-        if (video) video.addEventListener("loadedmetadata", function () { apply(progress); });
+        if (video) video.addEventListener("loadedmetadata", function () { apply(Math.max(0, progress)); });
+        apply(0);
       })();
 
       if (!reduce && "IntersectionObserver" in window) {
@@ -717,19 +596,6 @@
       } else {
         document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
       }
-
-      var maps = [
-        ["F13", "Copiar", "Macro", "Vol +", "Camada 2"],
-        ["Colar", "Zoom", "Print", "Mudo", "Emoji"],
-        ["Desfazer", "Buscar", "Abrir app", "Play", "Camada 3"]
-      ];
-      document.querySelectorAll(".demo-key").forEach(function (key, i) {
-        var state = 0;
-        key.addEventListener("click", function () {
-          state = (state + 1) % maps.length;
-          key.textContent = maps[state][i];
-        });
-      });
     })();
   </script>
 </body>
