@@ -6,291 +6,264 @@
   <title>Keychron V6 Max | Teclado mecânico wireless QMK</title>
   <meta name="description" content="Keychron V6 Max: teclado mecânico full-size com 2.4 GHz a 1000 Hz, Bluetooth 5.1, QMK/VIA, hot-swap e bateria de 4000 mAh.">
   <style>
-    /* Radius system: buttons are pill, images and surfaces are 16px */
+    /*
+      Identidade: docs/keychron-v6-max/identidade-visual.md
+      Tema claro travado (marca de loja branca). Acento único: laranja #F25C2B.
+      Raios: botões 4px, mídia e superfícies 12px.
+    */
     :root {
-      --bg: #0e0f12;
-      --bg-2: #14161b;
-      --line: #23262e;
-      --text: #ececf1;
-      --muted: #9aa1b0;
-      --accent: #6b96ff;
-      --r: 16px;
+      --paper: #fcfcfd;
+      --panel: #f5f5f7;
+      --ink: #111113;
+      --muted: #6e6e73;
+      --line: #e4e4e9;
+      --accent: #f25c2b;
+      --accent-soft: #fdeee7;
+      --r-btn: 4px;
+      --r-media: 12px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Helvetica Neue", "Segoe UI", Roboto, system-ui, sans-serif;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
-    img { max-width: 100%; display: block; }
+    img, video { max-width: 100%; display: block; }
     a { color: inherit; }
     .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
     .btn {
       display: inline-block;
-      background: #e9edf7;
-      color: #101116;
+      background: var(--ink);
+      color: #fff;
       text-decoration: none;
-      padding: 13px 30px;
-      border-radius: 999px;
-      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: var(--r-btn);
+      font-weight: 600;
       font-size: 0.95rem;
       white-space: nowrap;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+      transition: background 0.2s, transform 0.15s;
     }
-    .btn:hover { background: #fff; }
+    .btn:hover { background: #2b2b30; }
     .btn:active { transform: scale(0.98); }
-    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
-    .btn-ghost:hover { background: var(--bg-2); border-color: var(--muted); }
-    .btn-sm { padding: 9px 22px; font-size: 0.85rem; }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: #fff; }
+    .btn-sm { padding: 10px 24px; font-size: 0.85rem; }
 
-    /* Nav: single line, 68px */
+    /* Slot de mídia: substituir cada bloco .media-slot pelo asset final */
+    .media-slot {
+      position: relative;
+      border: 1.5px dashed #c9c9d2;
+      border-radius: var(--r-media);
+      background: repeating-linear-gradient(45deg, #f7f7f9, #f7f7f9 14px, #f2f2f5 14px, #f2f2f5 28px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .media-slot .tag {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 34ch;
+    }
+    .media-slot .tag b {
+      display: block;
+      color: var(--ink);
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Nav: uma linha, 68px */
     header {
       position: sticky; top: 0; z-index: 10;
       height: 68px;
-      background: rgba(14, 15, 18, 0.82);
+      background: rgba(252, 252, 253, 0.88);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
     }
     .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-    .logo { font-weight: 800; letter-spacing: 0.04em; font-size: 1rem; }
-    .logo span { color: var(--accent); }
+    .logo { font-weight: 800; letter-spacing: 0.02em; font-size: 1.05rem; }
     .nav-links { display: flex; gap: 26px; font-size: 0.88rem; color: var(--muted); }
     .nav-links a { text-decoration: none; }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover { color: var(--ink); }
 
-    /* Hero: asymmetric split */
-    .hero { padding: 64px 0 80px; }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 5fr 6fr;
-      gap: 48px;
-      align-items: center;
-    }
+    /* 02 Hero: split assimétrico */
+    .hero { padding: 60px 0 80px; }
+    .hero-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 48px; align-items: center; }
     .eyebrow {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 18px;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
     }
     h1 {
       font-size: clamp(2rem, 4.2vw, 3.2rem);
-      line-height: 1.12;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+      line-height: 1.1; font-weight: 800; letter-spacing: -0.02em;
       margin-bottom: 18px;
     }
-    .hero-sub {
-      color: var(--muted);
-      font-size: 1.08rem;
-      max-width: 44ch;
-      margin-bottom: 30px;
-    }
+    .hero-sub { color: var(--muted); font-size: 1.08rem; max-width: 44ch; margin-bottom: 30px; }
     .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
-    .hero-img img {
-      border-radius: var(--r);
-      width: 100%;
-      aspect-ratio: 16/11;
-      object-fit: cover;
-    }
+    .hero-media { aspect-ratio: 16/11; }
 
-    /* Stat row */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-    .stat { padding: 36px 24px; }
-    .stat + .stat { border-left: 1px solid var(--line); }
-    .stat b {
-      display: block;
-      font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    .stat span { color: var(--muted); font-size: 0.9rem; }
-
-    section { padding: 96px 0; }
+    section { padding: 88px 0; }
     h2 {
       font-size: clamp(1.6rem, 3.2vw, 2.3rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.15;
       margin-bottom: 14px;
     }
     .lead { color: var(--muted); max-width: 62ch; }
 
-    /* Design: full-width image + stacked text + 3-col detail */
-    .design-img img {
-      border-radius: var(--r);
-      width: 100%;
-      aspect-ratio: 21/9;
-      object-fit: cover;
-      margin: 40px 0 48px;
-    }
-    .detail-grid {
+    /* 03 Destaques: bento 5 células */
+    .bento {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 40px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-top: 40px;
     }
+    .cell {
+      border-radius: var(--r-media);
+      padding: 28px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .cell h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .cell p { color: var(--muted); font-size: 0.9rem; }
+    .cell-media { grid-column: span 3; grid-row: span 2; padding: 0; border: none; display: flex; }
+    .cell-media .media-slot { flex: 1; min-height: 320px; }
+    .cell-a { grid-column: span 3; background: var(--accent-soft); border-color: transparent; }
+    .cell-a h3 { color: var(--accent); }
+    .cell-b { grid-column: span 3; }
+    .cell-c { grid-column: span 3; background: var(--panel); border-color: transparent; }
+    .cell-d { grid-column: span 3; }
+
+    /* 04 Design: mídia full-width + texto empilhado + detalhes assimétricos */
+    .design-media { aspect-ratio: 21/9; margin: 40px 0 48px; }
+    .detail-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
     .detail h3 { font-size: 1rem; margin-bottom: 8px; }
     .detail p { color: var(--muted); font-size: 0.92rem; }
 
-    /* Personalização: split text + live demo */
-    .custom-grid {
-      display: grid;
-      grid-template-columns: 6fr 5fr;
-      gap: 56px;
-      align-items: center;
+    /* 05 Performance: comparação tipográfica */
+    .perf {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+      align-items: center; background: var(--panel);
+      border-radius: var(--r-media); padding: 56px 48px;
     }
-    .feature-list { margin-top: 26px; }
-    .feature-list li {
-      list-style: none;
-      padding: 14px 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+    .perf-nums { display: grid; gap: 28px; }
+    .perf-num b { display: block; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+    .perf-num.hi b { color: var(--accent); }
+    .perf-num span { color: var(--muted); font-size: 0.88rem; }
+
+    /* 06 Personalização: split texto + demo real */
+    .custom-grid { display: grid; grid-template-columns: 6fr 5fr; gap: 56px; align-items: start; }
+    .feature-list { margin-top: 26px; list-style: none; }
+    .feature-list li { padding: 14px 0; color: var(--muted); font-size: 0.95rem; }
     .feature-list li + li { border-top: 1px solid var(--line); }
-    .feature-list b { color: var(--text); }
+    .feature-list b { color: var(--ink); }
     .demo {
-      background: var(--bg-2);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      padding: 30px;
+      background: #fff; border: 1px solid var(--line);
+      border-radius: var(--r-media); padding: 30px;
     }
     .demo p { color: var(--muted); font-size: 0.85rem; margin-bottom: 18px; }
     .demo-keys { display: flex; gap: 10px; justify-content: center; }
     .demo-key {
-      flex: 1;
-      max-width: 74px;
-      aspect-ratio: 1;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      border-bottom-width: 4px;
-      background: #1b1e25;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.12s, border-color 0.2s;
+      flex: 1; max-width: 74px; aspect-ratio: 1;
+      border-radius: 8px; border: 1px solid var(--line); border-bottom-width: 4px;
+      background: var(--panel); color: var(--ink);
+      font-family: inherit; font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; transition: transform 0.12s, border-color 0.2s;
     }
     .demo-key:hover { border-color: var(--accent); }
     .demo-key:active { transform: translateY(2px); }
     .demo small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.75rem; text-align: center; }
+    .swap-media { aspect-ratio: 16/9; margin-top: 20px; }
 
-    /* Bateria: full-bleed image with scrim */
+    /* 07 Bateria: full-bleed com scrim */
     .battery {
-      position: relative;
-      border-radius: var(--r);
-      overflow: hidden;
-      min-height: 460px;
-      display: flex;
-      align-items: flex-end;
+      position: relative; border-radius: var(--r-media); overflow: hidden;
+      min-height: 440px; display: flex; align-items: flex-end;
     }
-    .battery img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
+    .battery .media-slot {
+      position: absolute; inset: 0; border-radius: 0; border: none;
+      align-items: flex-start; padding-top: 48px;
     }
     .battery-inner {
-      position: relative;
-      width: 100%;
-      padding: 200px 40px 44px;
-      background: linear-gradient(180deg, transparent, rgba(10, 11, 14, 0.88) 70%);
+      position: relative; width: 100%;
+      padding: 180px 40px 44px;
+      background: linear-gradient(180deg, transparent, rgba(17, 17, 19, 0.82) 75%);
+      color: #fff;
     }
     .battery-inner b {
       display: block;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1;
     }
-    .battery-inner p { color: #c7ccd8; max-width: 58ch; margin-top: 12px; }
+    .battery-inner p { color: #e6e6ec; max-width: 58ch; margin-top: 12px; }
 
-    /* Passos: vertical verb list */
+    /* 08 Multi-dispositivo: split lista + mídia */
+    .multi-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 56px; align-items: center; }
+    .multi-list { margin-top: 24px; list-style: none; }
+    .multi-list li { padding: 12px 0; color: var(--muted); font-size: 0.95rem; }
+    .multi-list li + li { border-top: 1px solid var(--line); }
+    .multi-list b { color: var(--ink); }
+    .multi-media { aspect-ratio: 16/10; }
+
+    /* 09 Como funciona: passos com verbo + slot 1:1 */
     .steps { margin-top: 44px; }
     .step {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 24px;
-      padding: 32px 0;
+      display: grid; grid-template-columns: 140px 200px 1fr;
+      gap: 28px; padding: 30px 0; align-items: center;
     }
     .step + .step { border-top: 1px solid var(--line); }
-    .step h3 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
-    .step p { color: var(--muted); }
+    .step h3 { font-size: 1.3rem; font-weight: 800; }
+    .step .media-slot { aspect-ratio: 1; padding: 10px; }
+    .step .media-slot .tag { font-size: 0.68rem; }
+    .step .media-slot .tag b { font-size: 0.72rem; }
+    .step p { color: var(--muted); font-size: 0.95rem; }
 
-    /* Comparativo */
-    .switch-img img {
-      border-radius: var(--r);
-      width: 100%;
-      aspect-ratio: 21/9;
-      object-fit: cover;
-      margin: 40px 0;
-    }
+    /* 10 Comparativo */
+    .switch-media { aspect-ratio: 21/9; margin: 40px 0; }
+    .sw-wrap { overflow-x: auto; }
     .sw-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
     .sw-table th, .sw-table td { text-align: left; padding: 14px 16px; }
-    .sw-table thead th {
-      font-size: 1.05rem;
-      font-weight: 800;
-      border-bottom: 1px solid var(--line);
-    }
+    .sw-table thead th { font-size: 1.05rem; font-weight: 800; border-bottom: 2px solid var(--ink); }
     .sw-table tbody th { color: var(--muted); font-weight: 500; width: 150px; }
-    .sw-table tbody td { color: var(--text); }
     .sw-note { color: var(--muted); font-size: 0.85rem; margin-top: 20px; }
-    .sw-wrap { overflow-x: auto; }
 
-    /* Especificações: grouped clusters */
-    .spec-clusters {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-      margin-top: 44px;
-    }
+    /* 11 Especificações: 3 blocos agrupados */
+    .spec-clusters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 44px; }
     .cluster h3 {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 16px;
     }
     .cluster dl { font-size: 0.92rem; }
     .cluster dt { color: var(--muted); margin-top: 14px; }
-    .cluster dd { color: var(--text); }
+    .cluster dd { color: var(--ink); }
+    .spec-note { color: var(--muted); font-size: 0.85rem; margin-top: 32px; }
 
-    /* Confiança */
+    /* 12 Confiança */
     .trust {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      padding: 56px 0;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+      padding: 52px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
     }
     .trust h3 { font-size: 0.98rem; margin-bottom: 6px; }
     .trust p { color: var(--muted); font-size: 0.88rem; }
 
-    /* Final */
-    .final { text-align: center; padding: 120px 0; }
+    /* 13 CTA final */
+    .final { text-align: center; padding: 110px 0; }
     .final .lead { margin: 0 auto 32px; }
+    .final-media { aspect-ratio: 21/9; max-width: 760px; margin: 44px auto 0; }
     .final small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.8rem; }
 
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 34px 0;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
+    footer { border-top: 1px solid var(--line); padding: 34px 0; color: var(--muted); font-size: 0.78rem; }
     footer p + p { margin-top: 6px; }
 
-    /* Reveal on scroll, gated by reduced motion */
+    /* Reveal com reduced-motion */
     @media (prefers-reduced-motion: no-preference) {
       .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
       .reveal.in { opacity: 1; transform: none; }
@@ -298,21 +271,23 @@
 
     @media (max-width: 860px) {
       .nav-links { display: none; }
-      .hero-grid, .custom-grid { grid-template-columns: 1fr; gap: 32px; }
-      .stats { grid-template-columns: 1fr; }
-      .stat + .stat { border-left: none; border-top: 1px solid var(--line); }
+      .hero-grid, .custom-grid, .multi-grid, .perf { grid-template-columns: 1fr; gap: 32px; }
+      .bento { grid-template-columns: 1fr; }
+      .cell-media, .cell-a, .cell-b, .cell-c, .cell-d { grid-column: span 1; grid-row: span 1; }
       .detail-grid, .spec-clusters, .trust { grid-template-columns: 1fr; gap: 28px; }
-      .step { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
-      section { padding: 64px 0; }
+      .step { grid-template-columns: 1fr; gap: 12px; }
+      .step .media-slot { max-width: 200px; }
+      section { padding: 60px 0; }
       .battery { min-height: 380px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- 01 NAVEGACAO -->
   <header>
     <div class="wrap nav">
-      <div class="logo">KEYCHRON <span>V6 MAX</span></div>
+      <div class="logo">Keychron</div>
       <nav class="nav-links">
         <a href="#design">Design</a>
         <a href="#personalizacao">Personalização</a>
@@ -324,6 +299,7 @@
   </header>
 
   <main>
+    <!-- 02 HERO -->
     <section class="hero wrap">
       <div class="hero-grid">
         <div>
@@ -335,31 +311,57 @@
             <a class="btn btn-ghost" href="#especificacoes">Ver especificações</a>
           </div>
         </div>
-        <div class="hero-img">
-          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__1/image-9bb5a916-10a6-4323-b003-33909ea450e8.png?Expires=2102951909&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=mzcA37UTMk4rK-cjJPxciUBV6qanbDGShGDotMtu0swXSve52N5AnURtZLJbB-kXUZ3VoiIl2roMc1uQHvoAzVBLy3s2xuHZyepG9C2sMrJ5-ZlxvsK~yF7Zpnu4Ct2EVvWNXtnDx-BUTZ107RHM1ZydcnvxcP~KlfF2g845KyWHRxNYH3TLLqQiKskdd~-jt6pk1KxXo3rQ2MpUX~sBd0gFuMvRIBqoyOe3NJXzW2GG8IvEYTAicdYbN7rdhZst-6IC-c53kFL0KvtEvQkswUIyEAb26XpxnOgKtFu52pkwgCGWCFZejquPg3n6V5f8DeLF2sNq178WJTpk3EIw1A__" alt="Teclado mecânico Carbon Black com backlight RGB sobre mesa escura">
+        <!-- TODO SLOT M1: foto hero do produto 3/4, 16:11 (ou video loop 6s), briefing em conteudo-site.md secao 2 -->
+        <div class="media-slot hero-media">
+          <p class="tag"><b>SLOT M1 · Hero</b>Foto 3/4 do teclado, 16:11, fundo claro de estúdio. Aceita vídeo loop de 6 s.</p>
         </div>
       </div>
     </section>
 
-    <div class="wrap reveal">
-      <div class="stats">
-        <div class="stat"><b>1000 Hz</b><span>de resposta no modo 2.4 GHz, mesmo nível do cabo</span></div>
-        <div class="stat"><b>4000 mAh</b><span>de bateria, até 300 horas sem backlight</span></div>
-        <div class="stat"><b>3 aparelhos</b><span>pareados no Bluetooth, troca por Fn + 1, 2 ou 3</span></div>
+    <!-- 03 DESTAQUES -->
+    <section>
+      <div class="wrap reveal">
+        <h2>O essencial em cinco pontos</h2>
+        <div class="bento">
+          <!-- TODO SLOT M2: closeup receptor 2.4 GHz ou teclado em uso, 3:4 vertical -->
+          <div class="cell cell-media">
+            <div class="media-slot">
+              <p class="tag"><b>SLOT M2 · Destaque</b>Closeup do receptor 2.4 GHz conectado, orientação vertical.</p>
+            </div>
+          </div>
+          <div class="cell cell-a">
+            <h3>1000 Hz sem fio</h3>
+            <p>O modo 2.4 GHz responde na mesma velocidade de um teclado com fio.</p>
+          </div>
+          <div class="cell cell-b">
+            <h3>Até 300 h de bateria</h3>
+            <p>4000 mAh que seguram semanas de trabalho longe do carregador.</p>
+          </div>
+          <div class="cell cell-c">
+            <h3>Hot-swap sem solda</h3>
+            <p>Troque os switches em minutos com o extrator que vem na caixa.</p>
+          </div>
+          <div class="cell cell-d">
+            <h3>QMK e VIA no navegador</h3>
+            <p>Remapeie tudo pelo Keychron Launcher, sem instalar nada. Som de custom direto de fábrica.</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
+    <!-- 04 DESIGN -->
     <section id="design">
       <div class="wrap reveal">
         <h2>Construído como os customs de bancada</h2>
-        <p class="lead">A placa fica suspensa em gaskets flexíveis e camadas de espuma IXPE, PET e látex preenchem o interior. O resultado aparece no toque, com uma flexão leve a cada tecla, e no som, mais grave e uniforme.</p>
-        <div class="design-img">
-          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__6/-t-e-x-t_-t-o_-i-m-a-g-e-e74aa07a-df16-476b-9db2-4669878fd772.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=EjLTZsguP9Jlj0dxanvbVXoFK0datwjiheXlHc9XcCTFLQgv7-F6oFI8ybkdhp2-uHpibgnf7K6cixuLr~moNSRNzhw6XWml8YlXyGD0~LWtqxh3q7cynaAaNHVtudrIxX791mq3T8HIVSDP~O0kh-h7Uwg3-nLHgPlUWndcNOF5NXTKMfCvW4j9rld9fzG3jZgGtBVi0xan5h3z6I998-GQXbSrl8ks3d8Mjo5PgeHykl1v2WHToX1Nv2yNmvvL2~b5MntfH15rHzW9OfZBqlOji0Nv4rk3DJBVg8nXaKFGv1lDfTm8fyz9AUHlzgSfj4~uRnrW3qmRoh17nDfNkg__" alt="Macro das keycaps PBT esculpidas com brilho RGB entre as teclas">
+        <p class="lead">A placa fica suspensa em gaskets flexíveis e camadas de espuma IXPE, PET e látex preenchem o interior. O resultado aparece no toque e no som, mais grave e uniforme.</p>
+        <!-- TODO SLOT M3: vista explodida das camadas ou macro das keycaps, 21:9 -->
+        <div class="media-slot design-media">
+          <p class="tag"><b>SLOT M3 · Design</b>Vista explodida das camadas (keycaps, switches, placa, espumas, case) ou macro das keycaps OSA, 21:9.</p>
         </div>
         <div class="detail-grid">
           <div class="detail">
             <h3>Keycaps PBT double-shot, perfil OSA</h3>
-            <p>As legendas são moldadas em duas camadas de plástico e nunca apagam. O topo esférico do perfil OSA mantém o conforto em sessões longas.</p>
+            <p>As legendas são moldadas em duas camadas de plástico e nunca apagam. O topo esférico mantém o conforto em sessões longas.</p>
           </div>
           <div class="detail">
             <h3>Knob de metal</h3>
@@ -367,12 +369,29 @@
           </div>
           <div class="detail">
             <h3>Estabilizadores parafusados</h3>
-            <p>Teclas longas com menos chacoalho e som consistente, direto de fábrica.</p>
+            <p>Teclas longas com menos chacoalho e som consistente.</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- 05 PERFORMANCE -->
+    <section>
+      <div class="wrap reveal">
+        <div class="perf">
+          <div>
+            <h2>Wireless com resposta de teclado com fio</h2>
+            <p class="lead">No modo 2.4 GHz, o V6 Max reporta cada acionamento mil vezes por segundo. Com NKRO, todas as teclas pressionadas ao mesmo tempo são registradas.</p>
+          </div>
+          <div class="perf-nums">
+            <div class="perf-num"><b>125 Hz</b><span>taxa típica de teclados Bluetooth comuns</span></div>
+            <div class="perf-num hi"><b>1000 Hz</b><span>V6 Max no modo 2.4 GHz e no cabo</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 PERSONALIZACAO -->
     <section id="personalizacao">
       <div class="wrap">
         <div class="custom-grid reveal">
@@ -386,25 +405,35 @@
               <li><b>Hot-swap.</b> Os sockets aceitam qualquer switch MX de 3 ou 5 pinos, sem solda.</li>
             </ul>
           </div>
-          <div class="demo" aria-label="Demonstração de remapeamento">
-            <p>Toque em uma tecla e veja o remap acontecer:</p>
-            <div class="demo-keys">
-              <button class="demo-key" type="button">F13</button>
-              <button class="demo-key" type="button">Copiar</button>
-              <button class="demo-key" type="button">Macro</button>
-              <button class="demo-key" type="button">Vol +</button>
-              <button class="demo-key" type="button">Camada 2</button>
+          <div>
+            <div class="demo" aria-label="Demonstração de remapeamento">
+              <p>Toque em uma tecla e veja o remap acontecer:</p>
+              <div class="demo-keys">
+                <button class="demo-key" type="button">F13</button>
+                <button class="demo-key" type="button">Copiar</button>
+                <button class="demo-key" type="button">Macro</button>
+                <button class="demo-key" type="button">Vol +</button>
+                <button class="demo-key" type="button">Camada 2</button>
+              </div>
+              <small>No teclado real, isso acontece no Keychron Launcher, pelo navegador.</small>
             </div>
-            <small>No teclado real, isso acontece no Keychron Launcher, pelo navegador.</small>
+            <!-- TODO SLOT M4: video 10s das maos trocando um switch, sem corte, 16:9 -->
+            <div class="media-slot swap-media">
+              <p class="tag"><b>SLOT M4 · Hot-swap</b>Vídeo de 10 s da troca de um switch com o extrator, plano fechado, 16:9.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- 07 BATERIA -->
     <section>
       <div class="wrap reveal">
         <div class="battery">
-          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__2/-t-e-x-t_-t-o_-i-m-a-g-e-9abf8ac2-6b71-4c02-baec-2beffa7754d0.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=GAOiGaiJI7ViARJOXvd0jfoBhdfNey3rXyP4jmssRplrtvxUBEhVF-FwYo3tcKdoqbz9c3F36~p7aBIXGjNhfDT5rQxPqzfzfqPkcH3AlQKnNKxTJqSD-AV7clEONCkv5cN-OzSCDEHB6B3VEJUhsOnzUUsjIBXpIsAQTpDIdqXAHwGnGO78EXONJuXwimXtSQqELrq7VbY~HEWCPpdqo7j~4HjcZXoDxqc3iWN57MCwpeqEIkzhqJ4y2e-hyJXKKCFn9JdFJhm9MiInh0pwwOut0SaYQgFNAY2dR57rVtHn6cX7KS2GN-BP0GMUfVwODq7kT-iHjguoIHyx1LK3AQ__" alt="Teclado full-size sem cabo sobre mesa de madeira ao entardecer">
+          <!-- TODO SLOT M5: foto ambientada do teclado sem cabo, home office ao entardecer, 21:9 -->
+          <div class="media-slot">
+            <p class="tag"><b>SLOT M5 · Bateria</b>Foto ambientada, teclado sem cabo em mesa de madeira ao entardecer, 21:9. O gradiente escuro do texto já está aplicado por cima.</p>
+          </div>
           <div class="battery-inner">
             <b>Até 300 horas de bateria</b>
             <p>Com o backlight desligado, os 4000 mAh seguram semanas de trabalho. Com luz moderada, cerca de 100 horas, e o USB-C recarrega enquanto você digita.</p>
@@ -413,32 +442,62 @@
       </div>
     </section>
 
+    <!-- 08 MULTI-DISPOSITIVO -->
+    <section>
+      <div class="wrap">
+        <div class="multi-grid reveal">
+          <div>
+            <h2>Um teclado para a mesa inteira</h2>
+            <p class="lead">Pelo Bluetooth 5.1, o V6 Max mantém até três dispositivos pareados, e a troca é um atalho: Fn mais 1, 2 ou 3.</p>
+            <ul class="multi-list">
+              <li><b>Desktop</b> no receptor 2.4 GHz, para latência mínima</li>
+              <li><b>Notebook e tablet</b> no Bluetooth, com troca por atalho</li>
+              <li><b>USB-C</b> quando quiser fio ou precisar carregar</li>
+            </ul>
+          </div>
+          <!-- TODO SLOT M6: cena com teclado ao centro e 3 aparelhos ao redor, 16:10 -->
+          <div class="media-slot multi-media">
+            <p class="tag"><b>SLOT M6 · Multi-dispositivo</b>Teclado ao centro com desktop, notebook e tablet ao redor, 16:10. Detalhe alternativo: closeup dos seletores laterais.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 COMO FUNCIONA -->
     <section>
       <div class="wrap reveal">
         <h2>Da caixa ao seu layout</h2>
         <div class="steps">
           <div class="step">
             <h3>Conecte</h3>
-            <p>Mova o seletor para 2.4 GHz com o receptor incluso, pareie por Bluetooth ou use o cabo USB-C. A chave ao lado ajusta o teclado para Mac ou Windows, com keycaps dos dois sistemas na caixa.</p>
+            <!-- TODO SLOT M7a: mao movendo o seletor lateral, 1:1 -->
+            <div class="media-slot"><p class="tag"><b>SLOT M7a</b>Mão no seletor lateral, 1:1</p></div>
+            <p>Mova o seletor para 2.4 GHz com o receptor incluso, pareie por Bluetooth ou use o cabo USB-C. A chave ao lado ajusta o teclado para Mac ou Windows.</p>
           </div>
           <div class="step">
             <h3>Configure</h3>
+            <!-- TODO SLOT M7b: tela do navegador com o teclado ao lado, 1:1 -->
+            <div class="media-slot"><p class="tag"><b>SLOT M7b</b>Navegador com o Launcher e teclado ao lado, 1:1</p></div>
             <p>Abra o Keychron Launcher, conecte o teclado e ajuste teclas, camadas, macros e a função do knob. Tudo fica gravado na memória interna.</p>
           </div>
           <div class="step">
             <h3>Troque</h3>
-            <p>Com os extratores da caixa, keycaps e switches saem sem ferramenta de solda. Os Gateron Jupiter aguentam até 80 milhões de acionamentos, e qualquer switch MX entra no lugar.</p>
+            <!-- TODO SLOT M7c: extrator removendo um switch, 1:1 -->
+            <div class="media-slot"><p class="tag"><b>SLOT M7c</b>Extrator removendo um switch, 1:1</p></div>
+            <p>Com os extratores da caixa, keycaps e switches saem sem solda. Os Gateron Jupiter aguentam até 80 milhões de acionamentos.</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- 10 COMPARATIVO -->
     <section id="comparar">
       <div class="wrap reveal">
         <h2>Qual Gateron Jupiter combina com você</h2>
         <p class="lead">Os três switches disponíveis mudam o toque do teclado, e a escolha depende do que você faz com ele o dia inteiro.</p>
-        <div class="switch-img">
-          <img src="https://cms-toolkit-artifacts.artlist.io/content/-t-e-x-t_-t-o_-i-m-a-g-e-v1/media__1/-t-e-x-t_-t-o_-i-m-a-g-e-32dc70ae-ac29-4b99-8b56-6d3aaa0a2bae.png?Expires=2102951948&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=MHB60wb7PYvM7GRwZ-DPAOjnQqGXKQIb6ChI1lE30h~uQocOOq8gqPBIa4odWDE97nC42XPC4JtvuwJzPP8YPm~vt1EYp1G3zlCvRWnyD33eIuorOo6~nLorJ5op4Cc2oUNlgP4k7z0u~39mmNOiXF~qPS1C2bAolTvZP9vh~9vr9GGnxvkHmXujSnV5PQJNvnSK5wfn6pXz7FbWEp4q8P-jZatth6-wcic1JyH-rhs-IfV6k57TiqGEwJlDgJJ-0LLH-gLbZZ5cOj~YQJJKu5dBLUoI~JiV6-WunTqcm0FZm-b6KdeoYX96C-Prb81kyq91eDI1BWBuHeCz8g-Cog__" alt="Três switches mecânicos lado a lado com hastes vermelha, marrom e amarela">
+        <!-- TODO SLOT M8: trio de switches lado a lado, hastes vermelha, marrom e amarela, 21:9 -->
+        <div class="media-slot switch-media">
+          <p class="tag"><b>SLOT M8 · Comparativo</b>Três switches em pé lado a lado, hastes vermelha, marrom e amarela, enquadramento idêntico, 21:9.</p>
         </div>
         <div class="sw-wrap">
           <table class="sw-table">
@@ -457,6 +516,7 @@
       </div>
     </section>
 
+    <!-- 11 ESPECIFICACOES -->
     <section id="especificacoes">
       <div class="wrap reveal">
         <h2>Especificações</h2>
@@ -490,9 +550,11 @@
             </dl>
           </div>
         </div>
+        <p class="spec-note">Valores de autonomia variam conforme o uso. Preço e disponibilidade na página do produto.</p>
       </div>
     </section>
 
+    <!-- 12 CONFIANCA -->
     <div class="wrap reveal">
       <div class="trust">
         <div>
@@ -510,19 +572,25 @@
       </div>
     </div>
 
+    <!-- 13 CTA FINAL -->
     <section class="final">
       <div class="wrap reveal">
         <h2>Digite melhor a partir de hoje</h2>
         <p class="lead">O V6 Max está disponível nas versões Red, Brown e Banana. Confira o preço atual e o prazo de entrega na página do produto.</p>
         <a class="btn" href="https://www.amazon.com/dp/B0D14L7VZ6?tag=thewire06-20&linkCode=xm2&ascsubtag=F0401KHW01GYTR1D746XCBVD5713M&th=1" target="_blank" rel="noopener">Comprar na Amazon</a>
         <small>Layout ANSI na cor Carbon Black, com knob incluso.</small>
+        <!-- TODO SLOT M9: vinheta em video do teclado com RGB ciclando, loop, 21:9 -->
+        <div class="media-slot final-media">
+          <p class="tag"><b>SLOT M9 · Fechamento</b>Vinheta em vídeo do teclado com RGB ciclando devagar, loop, 21:9.</p>
+        </div>
       </div>
     </section>
   </main>
 
+  <!-- 14 RODAPE -->
   <footer>
     <div class="wrap">
-      <p>Página de demonstração. Keychron e V6 Max são marcas de seus respectivos donos. Fotos ilustrativas geradas por IA.</p>
+      <p>Página de demonstração. Keychron e V6 Max são marcas de seus respectivos donos.</p>
       <p>O link de compra direciona para a Amazon e pode conter código de afiliado. Valores de autonomia e desempenho informados pelo fabricante.</p>
     </div>
   </footer>
