@@ -212,6 +212,17 @@
     .step .media-slot .tag b { font-size: 0.72rem; }
     .step p { color: var(--muted); font-size: 0.95rem; }
 
+    /* Lente: split com midia a esquerda e specs em duas colunas */
+    .lens-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 56px; align-items: center; }
+    .lens-media { aspect-ratio: 4/5; }
+    .lens-specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 18px 32px; margin: 28px 0 30px;
+    }
+    .lens-specs div { border-top: 1px solid var(--line); padding-top: 12px; }
+    .lens-specs dt { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .lens-specs dd { font-size: 0.98rem; font-weight: 600; margin-top: 2px; }
+
     /* Ficha tecnica em 3 blocos */
     .spec-clusters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 44px; }
     .cluster h3 {
@@ -251,7 +262,8 @@
     @media (max-width: 860px) {
       .nav-links { display: none; }
       .hero { padding: 48px 0 64px; }
-      .hero-grid, .gate-grid, .lut-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero-grid, .gate-grid, .lut-grid, .lens-grid { grid-template-columns: 1fr; gap: 32px; }
+      .lens-specs { grid-template-columns: 1fr; gap: 14px; }
       .bento { grid-template-columns: 1fr; }
       .cell-media, .cell-a, .cell-b, .cell-c, .cell-d { grid-column: span 1; grid-row: span 1; }
       .detail-grid, .spec-clusters, .trust, .stats { grid-template-columns: 1fr; gap: 28px; }
@@ -271,6 +283,7 @@
       <nav class="nav-links">
         <a href="#opengate">Open gate</a>
         <a href="#cor">Cor</a>
+        <a href="#lente">Lente</a>
         <a href="#ficha">Ficha técnica</a>
       </nav>
       <!-- TODO: trocar pela URL de afiliado quando o usuario enviar -->
@@ -441,7 +454,33 @@
       </div>
     </section>
 
-    <!-- 09 FICHA TECNICA -->
+    <!-- 09 LENTE: S PRO 24-70mm f/2.8 -->
+    <section id="lente">
+      <div class="wrap">
+        <div class="lens-grid reveal">
+          <!-- TODO SLOT M8: lente em pe sobre fundo escuro, luz lateral revelando o barril e a escala de foco, 4:5 -->
+          <div class="media-slot lens-media">
+            <p class="tag"><b>SLOT M8 · Lente</b>S PRO 24-70mm em pé, fundo escuro, luz lateral no barril e na escala de foco, 4:5.</p>
+          </div>
+          <div>
+            <h2>S PRO 24-70mm f/2.8, a lente do kit</h2>
+            <p class="lead">A zoom padrão da linha S PRO, certificada pela Leica. Abertura f/2.8 constante em toda a faixa e foco duplo de 480 fps, sem respiração perceptível e sem ruído de motor na gravação. O anel com focus clutch entra em manual num puxão, com a escala de distância no barril.</p>
+            <dl class="lens-specs">
+              <div><dt>Construção</dt><dd>18 elementos em 16 grupos</dd></div>
+              <div><dt>Diafragma</dt><dd>Circular de 11 lâminas</dd></div>
+              <div><dt>Foco mínimo</dt><dd>0,37 m · ampliação 0,25x</dd></div>
+              <div><dt>Filtro</dt><dd>82 mm</dd></div>
+              <div><dt>Peso</dt><dd>935 g</dd></div>
+              <div><dt>Vedação</dt><dd>Poeira e respingos</dd></div>
+            </dl>
+            <!-- TODO: trocar pela URL de afiliado da lente quando o usuario enviar -->
+            <a class="btn btn-ghost" href="https://www.amazon.com/s?k=Panasonic+Lumix+S+PRO+24-70mm+f2.8" target="_blank" rel="noopener">Ver a lente na Amazon</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 FICHA TECNICA -->
     <section id="ficha">
       <div class="wrap reveal">
         <h2>Especificações</h2>
