@@ -139,6 +139,7 @@
 
     /* Sensor: midia larga + detalhes assimetricos */
     .sensor-media { aspect-ratio: 21/9; margin: 40px 0 48px; }
+    .sensor-img { width: 100%; object-fit: cover; border-radius: var(--r-media); }
     .detail-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
     .detail h3 { font-size: 1rem; margin-bottom: 8px; }
     .detail p { color: var(--muted); font-size: 0.92rem; }
@@ -345,10 +346,8 @@
       <div class="wrap reveal">
         <h2>Um sensor que serve aos dois ofícios</h2>
         <p class="lead">O BSI CMOS de 24,2 MP equilibra resolução, leitura e comportamento em pouca luz. Para a foto que pede mais, o modo de alta resolução compõe 96 MP com a câmera na mão.</p>
-        <!-- TODO SLOT M3: macro do sensor exposto na montagem L-Mount, reflexo colorido, 21:9 -->
-        <div class="media-slot sensor-media">
-          <p class="tag"><b>SLOT M3 · Sensor</b>Macro do sensor exposto na baioneta L-Mount, reflexos coloridos no vidro, 21:9.</p>
-        </div>
+        <!-- M3: gerada no Higgsfield (nano banana), job a43f100a -->
+        <img class="sensor-media sensor-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_175650_a43f100a-4b08-43b8-ba7a-fc238509fee3.png" alt="Câmera sem a lente com o sensor full-frame exposto na baioneta L-Mount, refletindo verde e magenta">
         <div class="detail-grid">
           <div class="detail">
             <h3>ISO 100 a 51.200</h3>
