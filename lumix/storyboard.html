@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyboard do filme S1 IIE</title>
+  <meta name="description" content="Plano de conexão das imagens geradas no filme único de scroll do site da Lumix S1 IIE.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0e11; --panel: #16181d; --ink: #f2f3f6; --muted: #9aa0ab;
+      --line: rgba(255,255,255,0.09); --accent: #e0362c;
+      --mono: "IBM Plex Mono", Consolas, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      padding: 56px 24px 80px;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 12px; }
+    .lead { color: var(--muted); max-width: 62ch; margin-bottom: 18px; }
+    .meta {
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      display: flex; gap: 24px; flex-wrap: wrap;
+      padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      margin-bottom: 48px;
+    }
+    .meta b { color: var(--accent); font-weight: 500; }
+
+    .shot { display: grid; grid-template-columns: 300px 1fr; gap: 28px; align-items: start; }
+    .shot img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
+    .shot .ph {
+      aspect-ratio: 3/2; border-radius: 10px;
+      border: 1.5px dashed rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.8rem; text-align: center; padding: 16px;
+      background: repeating-linear-gradient(45deg, #14161b, #14161b 12px, #171a20 12px, #171a20 24px);
+    }
+    .shot h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+    .shot .time {
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+    }
+    .shot p { color: var(--muted); font-size: 0.92rem; }
+    .shot .chapter { margin-top: 10px; font-size: 0.85rem; color: var(--ink); }
+    .shot .chapter span { color: var(--muted); }
+
+    .link {
+      margin: 18px 0 18px 150px;
+      padding: 14px 18px 14px 22px;
+      border-left: 2px solid var(--accent);
+      color: var(--muted); font-size: 0.88rem; max-width: 58ch;
+    }
+    .link b { color: var(--ink); font-weight: 600; display: block; font-size: 0.78rem; font-family: var(--mono); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+
+    .how { background: var(--panel); border-radius: 12px; padding: 32px; margin-top: 56px; }
+    .how h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; }
+    .how ol { margin-left: 20px; color: var(--muted); font-size: 0.94rem; }
+    .how li { margin-bottom: 10px; }
+    .how b { color: var(--ink); }
+
+    @media (max-width: 700px) {
+      .shot { grid-template-columns: 1fr; gap: 14px; }
+      .link { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Como as imagens se conectam no filme</h1>
+    <p class="lead">Uma única viagem de câmera, sem cortes. Cada imagem aprovada é um ponto de parada; entre uma e outra, o Seedance gera o movimento com o quadro inicial e o final travados nas fotos. No site, o filme avança com o scroll e cada trecho carrega um capítulo de texto, como no projeto do teclado.</p>
+    <div class="meta">
+      <span>6 trechos de 5 s <b>·</b> 30 s no total</span>
+      <span>1080p <b>·</b> sem áudio</span>
+      <span>prompts em chinês na geração</span>
+    </div>
+
+    <div class="shot">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_174248_eb20ab52-438b-430f-87c4-0aa541b5f9b9.png" alt="Quadro 1: câmera de frente com a lente montada">
+      <div>
+        <p class="time">Quadro 1 · 0s</p>
+        <h2>Frente inteira, lente montada</h2>
+        <p>A câmera centrada, de frente, com a 24-70mm. É o quadro de abertura e também o de fechamento do loop.</p>
+        <p class="chapter"><span>Capítulo no site:</span> abertura, título e botões de compra.</p>
+      </div>
+    </div>
+    <div class="link"><b>Trecho 1 → 0 a 5 s</b>A câmera sobe em arco por cima do corpo, inclinando para baixo até enquadrar o topo. Luz e fundo não mudam.</div>
+
+    <div class="shot">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_174847_ef4c8ef6-a25e-4a3c-89a4-d40a134584b8.png" alt="Quadro 2: topo da câmera com o botão REC">
+      <div>
+        <p class="time">Quadro 2 · 5s</p>
+        <h2>Topo, botão REC em foco</h2>
+        <p>Macro do topo com o botão vermelho de gravação no centro, dials e sapata ao redor.</p>
+        <p class="chapter"><span>Capítulo no site:</span> os destaques da câmera, gravação e controles.</p>
+      </div>
+    </div>
+    <div class="link"><b>Trecho 2 → 5 a 10 s</b>A câmera desce de volta para a frente do corpo enquanto a lente se desacopla sozinha e desliza para fora do quadro, revelando a baioneta aberta.</div>
+
+    <div class="shot">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_175650_a43f100a-4b08-43b8-ba7a-fc238509fee3.png" alt="Quadro 3: sensor exposto na baioneta L-Mount">
+      <div>
+        <p class="time">Quadro 3 · 10s</p>
+        <h2>Sensor exposto na baioneta</h2>
+        <p>Panorâmico com o sensor full-frame refletindo verde e magenta dentro do anel de metal.</p>
+        <p class="chapter"><span>Capítulo no site:</span> o sensor de 24,2 MP e a foto de 96 MP.</p>
+      </div>
+    </div>
+    <div class="link"><b>Trecho 3 → 10 a 15 s</b>Mergulho lento para dentro da baioneta: o reflexo no vidro do sensor cresce até preencher a tela e a cena do beco acende dentro dele, um match cut de "entrar no que a câmera vê".</div>
+
+    <div class="shot">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_180135_7406f8f5-d3a5-4e50-8ad5-d1f8b4f87a59.png" alt="Quadro 4: beco noturno com moto ao centro">
+      <div>
+        <p class="time">Quadro 4 · 15s</p>
+        <h2>A cena: beco noturno com a moto</h2>
+        <p>O que a câmera vê. Neon vermelho e ciano, chão molhado, moto no centro do quadro 3:2 inteiro.</p>
+        <p class="chapter"><span>Capítulo no site:</span> 6K open gate, com os recortes 16:9, 9:16 e 2.4:1 desenhados por cima pelo próprio site.</p>
+      </div>
+    </div>
+    <div class="link"><b>Trecho 4 → 15 a 20 s</b>Mesmo enquadramento, zoom quase imperceptível: a cor drena da cena até o look V-Log lavado e volta a inundar o quadro, o momento Real Time LUT.</div>
+
+    <div class="shot">
+      <div class="ph">Quadro 5, a gerar: a mesma cena do beco em V-Log lavado, contraste baixo, cores dessaturadas</div>
+      <div>
+        <p class="time">Quadro 5 · 20s</p>
+        <h2>A mesma cena em V-Log</h2>
+        <p>Versão lavada e dessaturada do quadro 4, enquadramento idêntico, para a transição de cor ter ponto de chegada exato.</p>
+        <p class="chapter"><span>Capítulo no site:</span> a cor decidida antes da edição, V-Log e Real Time LUT.</p>
+      </div>
+    </div>
+    <div class="link"><b>Trecho 5 → 20 a 25 s</b>A cena desfoca em bokeh escuro e, em primeiro plano, a lente 24-70 entra em quadro em pé, saindo do desfoque para o foco.</div>
+
+    <div class="shot">
+      <div class="ph">Quadro 6, a gerar: a lente 24-70 em pé sozinha, mesmo fundo escuro e filete vermelho</div>
+      <div>
+        <p class="time">Quadro 6 · 25s</p>
+        <h2>A lente em pé, sozinha</h2>
+        <p>Retrato da 24-70mm f/2.8 no mesmo estúdio escuro, anel de zoom e escala de foco visíveis.</p>
+        <p class="chapter"><span>Capítulo no site:</span> a lente do kit e suas especificações.</p>
+      </div>
+    </div>
+    <div class="link"><b>Trecho 6 → 25 a 30 s</b>A câmera orbita ao redor da lente e revela o corpo ao fundo; a lente desliza e encaixa de volta na baioneta, terminando exatamente no quadro 1. O loop fecha e o scroll pode ir e voltar sem emenda aparente.</div>
+
+    <div class="how">
+      <h2>Como isso vira o vídeo</h2>
+      <ol>
+        <li><b>Seis gerações no Seedance 2.0</b>, uma por trecho, cada uma com o quadro inicial e o final travados nas imagens acima (foi assim que o loop do teclado ficou exato).</li>
+        <li><b>Emenda dos seis trechos</b> em um arquivo só, na ordem, sem transições adicionadas, porque cada fim já é o começo do próximo.</li>
+        <li><b>Extração dos frames</b> do arquivo final (120 quadros WebP), como no teclado.</li>
+        <li><b>Site em modo scroll:</b> a página da Lumix vira uma seção pinada onde o filme avança com a rolagem e os capítulos de texto entram sincronizados com cada trecho.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>
