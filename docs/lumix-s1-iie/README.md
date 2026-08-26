@@ -9,6 +9,7 @@ Documentação do produto usada como base da landing page ([`/lumix/index.html`]
 | [como-funciona.md](./como-funciona.md) | Open gate, Real Time LUT, estabilização e fluxo de trabalho |
 | [especificacoes.md](./especificacoes.md) | Ficha técnica completa |
 | [lente-s-pro-24-70.md](./lente-s-pro-24-70.md) | Lente S PRO 24-70mm f/2.8: recursos e ficha técnica |
+| [imagens-de-referencia.md](./imagens-de-referencia.md) | Os quadros aprovados do filme, na ordem do storyboard |
 
 **Marca:** Panasonic Lumix
 **Produto:** Lumix S1 IIE, full-frame mirrorless, montagem L-Mount (código DC-S1M2E)
