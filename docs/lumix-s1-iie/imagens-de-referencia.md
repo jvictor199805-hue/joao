@@ -67,6 +67,19 @@ Primeira versão da frente, sem o wordmark, usada como base da edição que crio
 
 ![Base sem marca da câmera com a lente](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_173426_3f3ae5ba-56cb-4289-a6aa-41e2341b4a75.png)
 
+## Versões 16:9 para o filme
+
+Reenquadradas no Higgsfield estendendo o fundo, sem mexer no conteúdo. São estas que entram como quadro inicial e final dos trechos no Seedance.
+
+| Quadro | Job 16:9 | Imagem |
+|---|---|---|
+| 1 · Frente inteira | `33ad38ef-fa31-4087-81ae-08b8509c3951` | [abrir](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_183056_33ad38ef-fa31-4087-81ae-08b8509c3951.png) |
+| 2 · Topo com REC | `75b2dca0-d6d4-4d37-b118-12207d730db8` | [abrir](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_183056_75b2dca0-d6d4-4d37-b118-12207d730db8.png) |
+| 3 · Sensor exposto | `2b07a51c-4c12-4aa3-acb2-03c9ecd74f39` | [abrir](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_183056_2b07a51c-4c12-4aa3-acb2-03c9ecd74f39.png) |
+| 4 · Beco com a moto | `d564614c-f26b-4af3-8ccb-909b7461ec24` | [abrir](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_183059_d564614c-f26b-4af3-8ccb-909b7461ec24.png) |
+| 5 · Beco em V-Log | `53776a3f-c94c-488e-8555-6b4408288133` | [abrir](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_183249_53776a3f-c94c-488e-8555-6b4408288133.png) |
+| 6 · Lente em pé | `6df85d5a-d58f-4ca5-b30c-c164cfc20d15` | [abrir](https://d8j0ntlcm91z4.cloudfront.net/user_38Tx6OuOlIhwQi5tuDsexGTjdwj/hf_20260826_181102_6df85d5a-d58f-4ca5-b30c-c164cfc20d15.png) |
+
 ## Próximo passo
 
-Reenquadrar os quadros 1 a 5 para 16:9 antes de gerar os 6 trechos no Seedance 2.0, cada trecho com o quadro inicial e final travados nestas imagens.
+Gerar os 6 trechos no Seedance 2.0 (5 s cada, 1080p, sem áudio, prompt em chinês), um por vez, cada trecho com o quadro inicial e final travados nas versões 16:9 acima. Depois: emendar, extrair os frames e montar o site em modo scroll.
