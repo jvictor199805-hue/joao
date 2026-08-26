@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumix S1 IIE | Full-frame 6K open gate</title>
+  <meta name="description" content="Panasonic Lumix S1 IIE: full-frame de 24,2 MP com 6K open gate, V-Log de 14+ stops, ProRes RAW interno e estabilização de 8 stops.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /*
+      Docs: docs/lumix-s1-iie/
+      Direcao: cinema escuro com HUD de viewfinder. Acento unico: vermelho REC.
+      Tema escuro travado (mundo visual unico da pagina). Raios: 4px botoes, 12px midia.
+      Link de compra: marcador (busca da Amazon) ate o link de afiliado chegar.
+    */
+    :root {
+      --bg: #0d0e11;
+      --panel: #16181d;
+      --ink: #f2f3f6;
+      --muted: #9aa0ab;
+      --line: rgba(255, 255, 255, 0.09);
+      --accent: #e0362c;
+      --r-btn: 4px;
+      --r-media: 12px;
+      --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, video { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    .btn {
+      display: inline-block;
+      background: #f2f3f6;
+      color: #101116;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: var(--r-btn);
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn:hover { background: #fff; }
+    .btn:active { transform: scale(0.98); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid rgba(242, 243, 246, 0.45); }
+    .btn-ghost:hover { background: rgba(242, 243, 246, 0.12); }
+    .btn-sm { padding: 10px 24px; font-size: 0.85rem; }
+
+    header {
+      position: sticky; top: 0; z-index: 20;
+      height: 66px;
+      background: rgba(13, 14, 17, 0.72);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+    .logo { font-weight: 800; letter-spacing: 0.06em; font-size: 1.02rem; }
+    .logo span { color: var(--muted); font-weight: 500; }
+    .nav-links { display: flex; gap: 26px; font-size: 0.88rem; color: var(--muted); }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* Slot de midia: substituir cada .media-slot pelo asset final */
+    .media-slot {
+      position: relative;
+      border: 1.5px dashed rgba(255, 255, 255, 0.18);
+      border-radius: var(--r-media);
+      background: repeating-linear-gradient(45deg, #14161b, #14161b 14px, #171a20 14px, #171a20 28px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .media-slot .tag { font-size: 0.78rem; color: var(--muted); line-height: 1.5; max-width: 36ch; }
+    .media-slot .tag b {
+      display: block; color: var(--ink); font-size: 0.85rem;
+      margin-bottom: 4px; letter-spacing: 0.04em;
+    }
+
+    /* Hero: split assimetrico, texto esquerda, midia direita */
+    .hero { padding: 72px 0 88px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 6fr 5fr;
+      gap: 56px; align-items: center;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+      line-height: 1.06; font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 18px; max-width: 14ch;
+      text-wrap: balance;
+    }
+    .hero-sub { color: var(--muted); font-size: 1.08rem; max-width: 42ch; margin-bottom: 30px; }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-media { aspect-ratio: 4/5; }
+
+    section { padding: 88px 0; }
+    h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.12;
+      margin-bottom: 14px; text-wrap: balance;
+    }
+    .lead { color: var(--muted); max-width: 62ch; }
+
+    /* Destaques: bento 5 celulas */
+    .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-top: 40px; }
+    .cell {
+      border-radius: var(--r-media); padding: 28px;
+      border: 1px solid var(--line); background: var(--panel);
+    }
+    .cell h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .cell p { color: var(--muted); font-size: 0.9rem; }
+    .cell-media { grid-column: span 3; grid-row: span 2; padding: 0; border: none; display: flex; background: none; }
+    .cell-media .media-slot { flex: 1; min-height: 320px; }
+    .cell-a { grid-column: span 3; background: rgba(224, 54, 44, 0.09); border-color: rgba(224, 54, 44, 0.25); }
+    .cell-a h3 { color: var(--accent); }
+    .cell-b, .cell-c { grid-column: span 3; }
+    .cell-c { background: #101216; }
+    .cell-d { grid-column: span 3; }
+
+    /* Sensor: midia larga + detalhes assimetricos */
+    .sensor-media { aspect-ratio: 21/9; margin: 40px 0 48px; }
+    .detail-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
+    .detail h3 { font-size: 1rem; margin-bottom: 8px; }
+    .detail p { color: var(--muted); font-size: 0.92rem; }
+
+    /* Open gate: demo interativo do recorte */
+    .gate { background: var(--panel); border-radius: var(--r-media); padding: 56px 48px; }
+    .gate-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 56px; align-items: center; }
+    .gate-controls { display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+    .gate-btn {
+      font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
+      padding: 10px 18px; border-radius: var(--r-btn); cursor: pointer;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--line);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .gate-btn:hover { color: var(--ink); }
+    .gate-btn.on { color: var(--ink); border-color: var(--accent); background: rgba(224, 54, 44, 0.1); }
+    /* Quadro 3:2 do sensor; trocar o fundo pela imagem M4 quando gerada */
+    .gate-frame {
+      position: relative; aspect-ratio: 3/2; border-radius: 8px; overflow: hidden;
+      background:
+        radial-gradient(120% 90% at 70% 20%, #262a33 0%, #181b21 55%, #121419 100%);
+      border: 1px solid var(--line);
+    }
+    .gate-frame .frame-note {
+      position: absolute; left: 12px; bottom: 10px;
+      font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .gate-crop {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid var(--accent); border-radius: 4px;
+      box-shadow: 0 0 0 200vmax rgba(13, 14, 17, 0.66);
+      transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1), height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%; height: 84.4%;
+    }
+    .gate-crop .ratio {
+      position: absolute; top: 8px; left: 10px;
+      font-family: var(--mono); font-size: 0.7rem; color: var(--accent);
+    }
+    .gate-frame[data-crop="v"] .gate-crop { width: 37.5%; height: 100%; }
+    .gate-frame[data-crop="c"] .gate-crop { width: 100%; height: 62.5%; }
+
+    /* Banda de numeros */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .stat { border-top: 2px solid var(--accent); padding-top: 22px; }
+    .stat b {
+      display: block; font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat span { color: var(--muted); font-size: 0.9rem; display: block; margin-top: 8px; max-width: 24ch; }
+
+    /* LUT: split invertido */
+    .lut-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 56px; align-items: center; }
+    .lut-media { aspect-ratio: 16/10; }
+    .lut-list { margin-top: 24px; list-style: none; }
+    .lut-list li { padding: 12px 0; color: var(--muted); font-size: 0.95rem; }
+    .lut-list li + li { border-top: 1px solid var(--line); }
+    .lut-list b { color: var(--ink); }
+
+    /* Passos com verbo */
+    .steps { margin-top: 44px; }
+    .step {
+      display: grid; grid-template-columns: 150px 200px 1fr;
+      gap: 28px; padding: 30px 0; align-items: center;
+    }
+    .step + .step { border-top: 1px solid var(--line); }
+    .step h3 { font-size: 1.3rem; font-weight: 800; }
+    .step .media-slot { aspect-ratio: 1; padding: 10px; }
+    .step .media-slot .tag { font-size: 0.68rem; }
+    .step .media-slot .tag b { font-size: 0.72rem; }
+    .step p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Ficha tecnica em 3 blocos */
+    .spec-clusters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 44px; }
+    .cluster h3 {
+      font-family: var(--mono);
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 16px;
+    }
+    .cluster dl { font-size: 0.92rem; }
+    .cluster dt { color: var(--muted); margin-top: 14px; }
+    .cluster dd { color: var(--ink); }
+    .spec-note { color: var(--muted); font-size: 0.85rem; margin-top: 32px; }
+
+    .trust {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+      padding: 52px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .trust h3 { font-size: 0.98rem; margin-bottom: 6px; }
+    .trust p { color: var(--muted); font-size: 0.88rem; }
+
+    .final { text-align: center; padding: 110px 0; }
+    .final .lead { margin: 0 auto 32px; }
+    .final-media { aspect-ratio: 21/9; max-width: 760px; margin: 44px auto 0; }
+    .final small { display: block; margin-top: 16px; color: var(--muted); font-size: 0.8rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 34px 0; color: var(--muted); font-size: 0.78rem; }
+    footer p + p { margin-top: 6px; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+      .reveal.in { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gate-crop { transition: none; }
+    }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .hero { padding: 48px 0 64px; }
+      .hero-grid, .gate-grid, .lut-grid { grid-template-columns: 1fr; gap: 32px; }
+      .bento { grid-template-columns: 1fr; }
+      .cell-media, .cell-a, .cell-b, .cell-c, .cell-d { grid-column: span 1; grid-row: span 1; }
+      .detail-grid, .spec-clusters, .trust, .stats { grid-template-columns: 1fr; gap: 28px; }
+      .step { grid-template-columns: 1fr; gap: 12px; }
+      .step .media-slot { max-width: 200px; }
+      .gate { padding: 32px 24px; }
+      section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 01 NAVEGACAO -->
+  <header>
+    <div class="wrap nav">
+      <div class="logo">LUMIX <span>S1 IIE</span></div>
+      <nav class="nav-links">
+        <a href="#opengate">Open gate</a>
+        <a href="#cor">Cor</a>
+        <a href="#ficha">Ficha técnica</a>
+      </nav>
+      <!-- TODO: trocar pela URL de afiliado quando o usuario enviar -->
+      <a class="btn btn-sm" href="https://www.amazon.com/s?k=Panasonic+LUMIX+S1IIE" target="_blank" rel="noopener">Comprar na Amazon</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- 02 HERO: split assimetrico -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Full-frame L-Mount · 6K open gate</p>
+          <h1>Grave uma vez, publique em todo formato</h1>
+          <p class="hero-sub">Sensor de 24,2 MP, V-Log de 14+ stops e ProRes RAW interno, no corpo selado da linha S1.</p>
+          <div class="cta-row">
+            <a class="btn" href="https://www.amazon.com/s?k=Panasonic+LUMIX+S1IIE" target="_blank" rel="noopener">Comprar na Amazon</a>
+            <a class="btn btn-ghost" href="#ficha">Ver ficha técnica</a>
+          </div>
+        </div>
+        <!-- TODO SLOT M1: hero da camera, three-quarter frontal, fundo escuro, luz dura, 4:5 -->
+        <div class="media-slot hero-media">
+          <p class="tag"><b>SLOT M1 · Hero</b>Corpo da S1 IIE em três quartos, fundo escuro, luz recortando o grip e o topo, 4:5.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 DESTAQUES: bento -->
+    <section>
+      <div class="wrap reveal">
+        <h2>O essencial em cinco pontos</h2>
+        <div class="bento">
+          <!-- TODO SLOT M2: detalhe do topo com dials e botao REC, 3:4 vertical -->
+          <div class="cell cell-media">
+            <div class="media-slot">
+              <p class="tag"><b>SLOT M2 · Destaque</b>Closeup do topo: dials, botão REC vermelho e display, orientação vertical.</p>
+            </div>
+          </div>
+          <div class="cell cell-a">
+            <h3>6K open gate 3:2</h3>
+            <p>O sensor inteiro vira quadro. Recorte 16:9, 9:16 e 2.4:1 do mesmo take.</p>
+          </div>
+          <div class="cell cell-b">
+            <h3>8 stops de estabilização</h3>
+            <p>Planos parados na mão e caminhadas lentas sem gimbal.</p>
+          </div>
+          <div class="cell cell-c">
+            <h3>ProRes RAW interno</h3>
+            <p>Até 5.8K 30p direto no CFexpress Type B, sem gravador externo.</p>
+          </div>
+          <div class="cell cell-d">
+            <h3>AF que reconhece o sujeito</h3>
+            <p>Phase Hybrid com 779 pontos e detecção por IA, em foto e vídeo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 SENSOR -->
+    <section>
+      <div class="wrap reveal">
+        <h2>Um sensor que serve aos dois ofícios</h2>
+        <p class="lead">O BSI CMOS de 24,2 MP equilibra resolução, leitura e comportamento em pouca luz. Para a foto que pede mais, o modo de alta resolução compõe 96 MP com a câmera na mão.</p>
+        <!-- TODO SLOT M3: macro do sensor exposto na montagem L-Mount, reflexo colorido, 21:9 -->
+        <div class="media-slot sensor-media">
+          <p class="tag"><b>SLOT M3 · Sensor</b>Macro do sensor exposto na baioneta L-Mount, reflexos coloridos no vidro, 21:9.</p>
+        </div>
+        <div class="detail-grid">
+          <div class="detail">
+            <h3>ISO 100 a 51.200</h3>
+            <p>Faixa nativa ampla, expansível de 50 a 204.800 para os extremos de luz.</p>
+          </div>
+          <div class="detail">
+            <h3>96 MP na mão</h3>
+            <p>Alta resolução por múltiplas capturas, sem tripé.</p>
+          </div>
+          <div class="detail">
+            <h3>Rajada de 30 fps</h3>
+            <p>Obturador eletrônico com AF contínuo. No mecânico, 10 fps.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 OPEN GATE: demo interativo -->
+    <section id="opengate">
+      <div class="wrap reveal">
+        <div class="gate">
+          <div class="gate-grid">
+            <div>
+              <p class="eyebrow">Open gate</p>
+              <h2>O quadro 3:2 inteiro é seu</h2>
+              <p class="lead">A S1 IIE grava a área completa do sensor em 6K 30p. O recorte para cada plataforma acontece depois, na edição. Toque nos formatos e veja quanto quadro sobra para reenquadrar.</p>
+              <div class="gate-controls" role="group" aria-label="Formatos de recorte">
+                <button class="gate-btn on" type="button" data-crop="h">16:9 horizontal</button>
+                <button class="gate-btn" type="button" data-crop="v">9:16 vertical</button>
+                <button class="gate-btn" type="button" data-crop="c">2.4:1 cinema</button>
+              </div>
+            </div>
+            <div>
+              <!-- TODO SLOT M4: still de cena real 3:2 para servir de fundo deste demo -->
+              <div class="gate-frame" data-crop="h" id="gate-frame">
+                <div class="gate-crop"><span class="ratio" id="gate-ratio">16:9</span></div>
+                <span class="frame-note">Sensor 3:2 · 6K open gate</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 NUMEROS -->
+    <section>
+      <div class="wrap reveal">
+        <div class="stats">
+          <div class="stat"><b>8,0 stops</b><span>de estabilização no corpo, no centro do quadro</span></div>
+          <div class="stat"><b>779 pontos</b><span>de detecção de fase com reconhecimento por IA</span></div>
+          <div class="stat"><b>14+ stops</b><span>de faixa dinâmica em V-Log</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 COR / REAL TIME LUT -->
+    <section id="cor">
+      <div class="wrap">
+        <div class="lut-grid reveal">
+          <div>
+            <h2>A cor decidida antes da edição</h2>
+            <p class="lead">Com o Real Time LUT, o look escolhido é gravado direto no arquivo. O cliente aprova no set e a pós começa com a cor pronta.</p>
+            <ul class="lut-list">
+              <li><b>V-Log e V-Gamut.</b> Mais de 14 stops para quem coloriza na pós.</li>
+              <li><b>LUTs no cartão.</b> Arquivos .cube e .vlt, ou looks criados no app Lumix Lab.</li>
+              <li><b>Cinelike A2.</b> Contraste suave, pronto para publicar sem tratamento.</li>
+            </ul>
+          </div>
+          <!-- TODO SLOT M5: mesma cena dividida ao meio, metade V-Log lavado, metade com LUT aplicado, 16:10 -->
+          <div class="media-slot lut-media">
+            <p class="tag"><b>SLOT M5 · Cor</b>Uma cena dividida ao meio: V-Log lavado de um lado, look final do outro, 16:10.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 FLUXO -->
+    <section>
+      <div class="wrap reveal">
+        <h2>Da lente à entrega</h2>
+        <div class="steps">
+          <div class="step">
+            <h3>Monte</h3>
+            <!-- TODO SLOT M6a: baioneta L-Mount com lente entrando, 1:1 -->
+            <div class="media-slot"><p class="tag"><b>SLOT M6a</b>Lente encaixando na baioneta L-Mount, 1:1</p></div>
+            <p>Qualquer lente L-Mount serve: Panasonic, Leica e Sigma compartilham a mesma baioneta.</p>
+          </div>
+          <div class="step">
+            <h3>Grave</h3>
+            <!-- TODO SLOT M6b: LCD articulado aberto com cena no monitor, 1:1 -->
+            <div class="media-slot"><p class="tag"><b>SLOT M6b</b>LCD articulado aberto durante gravação, 1:1</p></div>
+            <p>6K open gate, ProRes RAW no CFexpress B e o look aplicado em tempo real pelo Real Time LUT.</p>
+          </div>
+          <div class="step">
+            <h3>Entregue</h3>
+            <!-- TODO SLOT M6c: timeline de edicao com crops vertical e horizontal, 1:1 -->
+            <div class="media-slot"><p class="tag"><b>SLOT M6c</b>Timeline com o mesmo take em 16:9 e 9:16, 1:1</p></div>
+            <p>Do mesmo take saem os cortes horizontal, vertical e cinema, sem perder resolução.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 FICHA TECNICA -->
+    <section id="ficha">
+      <div class="wrap reveal">
+        <h2>Especificações</h2>
+        <p class="lead">Ficha técnica da S1 IIE (DC-S1M2E), corpo, em três blocos.</p>
+        <div class="spec-clusters">
+          <div class="cluster">
+            <h3>Sensor e foto</h3>
+            <dl>
+              <dt>Sensor</dt><dd>Full-frame 24,2 MP BSI CMOS</dd>
+              <dt>ISO</dt><dd>100 a 51.200, exp. 50 a 204.800</dd>
+              <dt>Estabilização</dt><dd>5 eixos, até 8,0 stops</dd>
+              <dt>Rajada</dt><dd>10 fps mecânico, 30 fps eletrônico</dd>
+              <dt>Alta resolução</dt><dd>96 MP com a câmera na mão</dd>
+            </dl>
+          </div>
+          <div class="cluster">
+            <h3>Vídeo</h3>
+            <dl>
+              <dt>Open gate</dt><dd>6K 30p na área 3:2 inteira</dd>
+              <dt>Cinemascope</dt><dd>2.4:1 até 60p sem crop</dd>
+              <dt>RAW interno</dt><dd>ProRes RAW até 5.8K 30p</dd>
+              <dt>Cor</dt><dd>V-Log 14+ stops, Real Time LUT</dd>
+              <dt>Amostragem</dt><dd>4:2:2 10-bit interno</dd>
+            </dl>
+          </div>
+          <div class="cluster">
+            <h3>Corpo e conexão</h3>
+            <dl>
+              <dt>Construção</dt><dd>Liga de magnésio selada</dd>
+              <dt>EVF</dt><dd>OLED 5,76 M pontos, 0,78x</dd>
+              <dt>LCD</dt><dd>3", articulado, touch</dd>
+              <dt>Cartões</dt><dd>CFexpress B + SD UHS-II</dd>
+              <dt>Peso</dt><dd>795 g com bateria e cartão</dd>
+            </dl>
+          </div>
+        </div>
+        <p class="spec-note">Valores informados pelo fabricante. Preço e disponibilidade na página do produto.</p>
+      </div>
+    </section>
+
+    <!-- 10 CONFIANCA -->
+    <div class="wrap reveal">
+      <div class="trust">
+        <div>
+          <h3>Envio internacional</h3>
+          <p>A Amazon entrega no Brasil com prazo e custo calculados no checkout.</p>
+        </div>
+        <div>
+          <h3>Devolução</h3>
+          <p>Política de devolução da Amazon, nos prazos e condições da loja.</p>
+        </div>
+        <div>
+          <h3>Garantia Panasonic</h3>
+          <p>Suporte oficial do fabricante para defeitos de fábrica.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 CTA FINAL -->
+    <section class="final">
+      <div class="wrap reveal">
+        <h2>Filme com o quadro inteiro</h2>
+        <p class="lead">A S1 IIE está disponível em corpo e em kits com lente L-Mount. Confira o preço atual e o prazo de entrega na página do produto.</p>
+        <a class="btn" href="https://www.amazon.com/s?k=Panasonic+LUMIX+S1IIE" target="_blank" rel="noopener">Comprar na Amazon</a>
+        <small>Corpo DC-S1M2E. Preço de lançamento US$ 2.499.</small>
+        <!-- TODO SLOT M7: vinheta em video da camera girando devagar sobre fundo escuro, loop, 21:9 -->
+        <div class="media-slot final-media">
+          <p class="tag"><b>SLOT M7 · Fechamento</b>Vinheta em vídeo: a câmera girando devagar sobre fundo escuro, tally vermelho aceso, loop, 21:9.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 12 RODAPE -->
+  <footer>
+    <div class="wrap">
+      <p>Página de demonstração. Panasonic, Lumix e S1 IIE são marcas de seus respectivos donos.</p>
+      <p>O link de compra direciona para a Amazon e pode conter código de afiliado. Especificações informadas pelo fabricante.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* Demo open gate: alterna o recorte sobre o quadro 3:2 */
+      var frame = document.getElementById("gate-frame");
+      var ratio = document.getElementById("gate-ratio");
+      var labels = { h: "16:9", v: "9:16", c: "2.4:1" };
+      document.querySelectorAll(".gate-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".gate-btn").forEach(function (b) { b.classList.remove("on"); });
+          btn.classList.add("on");
+          var crop = btn.getAttribute("data-crop");
+          frame.setAttribute("data-crop", crop);
+          ratio.textContent = labels[crop];
+        });
+      });
+
+      if (!reduce && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.15 });
+        document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+      }
+    })();
+  </script>
+</body>
+</html>
