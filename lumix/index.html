@@ -546,9 +546,13 @@
           var idx = Math.max(1, Math.min(FRAME_COUNT, Math.round(p * (FRAME_COUNT - 1)) + 1));
           var img = frames[idx];
           if (!img || !img.complete || !ctx) return;
-          if (canvas.width !== canvas.clientWidth) {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
+          /* Desenha na densidade real da tela (Retina e afins), limitado a 2x */
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var targetW = Math.round(canvas.clientWidth * dpr);
+          var targetH = Math.round(canvas.clientHeight * dpr);
+          if (canvas.width !== targetW || canvas.height !== targetH) {
+            canvas.width = targetW;
+            canvas.height = targetH;
           }
           var cw = canvas.width, ch = canvas.height;
           var s = Math.max(cw / img.width, ch / img.height);
